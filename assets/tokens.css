@@ -43,6 +43,13 @@
   --accent-primary-subtle: rgba(239, 156, 216, 0.12);
   --accent-primary-border: rgba(239, 156, 216, 0.4);
   --on-accent-primary: #0a0a0a;
+  /* layer 2b: categorical. tags and chart series only, never state */
+  --cat-1: #cba6f7;
+  --cat-2: #94e2d5;
+  --cat-3: #f9e2af;
+  --cat-4: #89dceb;
+  --cat-5: #b4befe;
+  --cat-6: #f2cdcd;
   /* theme literals */
   --bg-raised: #171717;
   --bg-overlay: #1c1c1c;
@@ -89,6 +96,13 @@
   --accent-primary-subtle: rgba(166, 31, 129, 0.12);
   --accent-primary-border: rgba(166, 31, 129, 0.4);
   --on-accent-primary: #ffffff;
+  /* layer 2b: categorical. tags and chart series only, never state */
+  --cat-1: #6d32b8;
+  --cat-2: #0f6b63;
+  --cat-3: #7a5800;
+  --cat-4: #095f79;
+  --cat-5: #3f4bbf;
+  --cat-6: #963c48;
   /* theme literals */
   --bg-raised: #ffffff;
   --bg-overlay: #ffffff;
@@ -116,7 +130,8 @@
   --text-primary: var(--neutral-9);
   --text-strong: var(--neutral-10);
   --text-max: var(--neutral-11);
-  --focus-ring: var(--accent-primary);
+  --focus-ring: color-mix(in srgb, var(--accent-primary) 55%, transparent);
+  --mark: color-mix(in srgb, var(--accent-primary) 55%, transparent);
 }
 
 :root {
@@ -210,7 +225,7 @@
   /* border widths */
   --border-w: 1px;
   --border-w-active: 2px;
-  --focus-w: 2px;
+  --focus-w: 1px;
   --focus-offset: 2px;
   --bar-w-severity: 3px;
   --bar-w-selected: 2px;

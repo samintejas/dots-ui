@@ -45,6 +45,16 @@ impl From<Severity> for Signal<Tone> {
     }
 }
 
+/// A stable categorical colour 1 to 6 for a tag name, so the same tag has the same colour everywhere.
+/// Same hash as `Dots.cat` in the design system.
+pub fn tag_cat(name: &str) -> u8 {
+    let mut h: u32 = 0;
+    for u in name.to_lowercase().encode_utf16() {
+        h = (h * 31 + u as u32) % 997;
+    }
+    (h % 6) as u8 + 1
+}
+
 /// A small label for status, category or count.
 ///
 /// Categories are grey: use a tone only when the badge reports a state, and let the word be the cue.
@@ -55,6 +65,9 @@ pub fn Badge(
     #[prop(optional)]
     count: bool,
     #[prop(optional, into)] label: MaybeProp<String>,
+    /// Categorical colour 1 to 6 for a user's tag. Use [`tag_cat`] to derive it from the name. Never with a tone.
+    #[prop(optional, into)]
+    cat: MaybeProp<u8>,
     /// Show the severity icon for the tone (use for warning and danger).
     #[prop(optional)]
     icon: bool,
@@ -78,6 +91,7 @@ pub fn Badge(
         <span
             class=if count { "d-badge d-badge--count" } else { "d-badge" }
             data-severity=move || tone.get().attr()
+            data-cat=move || cat.get().map(|c| c.to_string())
             aria-label=move || label.get()
             aria-disabled=move || disabled.get().then_some("true")
         >
@@ -97,8 +111,9 @@ pub fn Tag(
     #[prop(optional, into)] disabled: Signal<bool>,
 ) -> impl IntoView {
     let aria = format!("remove {text}");
+    let cat = tag_cat(&text).to_string();
     view! {
-        <span class="d-badge" aria-disabled=move || disabled.get().then_some("true")>
+        <span class="d-badge" data-cat=cat aria-disabled=move || disabled.get().then_some("true")>
             {text}
             <button type="button" class="d-badge__x" aria-label=aria on:click=move |_| on_remove.run(())>
                 <Icon name="x" small=true/>

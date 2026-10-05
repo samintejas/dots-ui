@@ -1,6 +1,11 @@
 //! The components, one module each. All are re-exported flat from the crate root and the prelude.
 
 pub mod accordion;
+pub mod chat;
+pub mod data;
+pub mod filter_bar;
+pub mod input_bar;
+pub mod tag_input;
 pub mod hero;
 pub mod list;
 pub mod split_pane;
@@ -31,6 +36,11 @@ pub mod toast;
 pub mod tooltip;
 
 pub use accordion::*;
+pub use chat::{Chat, ChatMessage, From as ChatFrom};
+pub use data::*;
+pub use filter_bar::*;
+pub use input_bar::*;
+pub use tag_input::*;
 pub use hero::*;
 pub use list::*;
 pub use split_pane::*;

@@ -187,6 +187,11 @@ fn menu_click(e: leptos::ev::MouseEvent) {
         e.prevent_default();
         return;
     }
+    // a multi-select menu stays open while checkboxes are toggled; its `done` button closes it
+    let role = item.get_attribute("role").unwrap_or_default();
+    if menu.has_attribute("data-multi") && role == "menuitemcheckbox" {
+        return;
+    }
     if is_open(&menu) {
         close_menu(true);
     }
@@ -207,6 +212,9 @@ pub fn Menu(
     /// Make the menu at least as wide as its trigger.
     #[prop(optional)]
     match_width: bool,
+    /// Stay open while checkbox rows are toggled; give it a [`MenuFoot`] with `clear` and `done`.
+    #[prop(optional)]
+    multi: bool,
     children: Children,
 ) -> impl IntoView {
     let panel = NodeRef::<leptos::html::Div>::new();
@@ -286,7 +294,7 @@ pub fn Menu(
     let keydown = menu_keydown(buf);
     view! {
         {trigger.run()}
-        <div class="d-menu" id=id role="menu" aria-label=label hidden node_ref=panel on:keydown=keydown on:click=menu_click>
+        <div class="d-menu" id=id role="menu" aria-label=label data-multi=multi.then_some("") hidden node_ref=panel on:keydown=keydown on:click=menu_click>
             {children()}
         </div>
     }
@@ -448,3 +456,15 @@ pub fn MenuHead(children: Children) -> impl IntoView {
     view! { <div class="d-menu__head" role="presentation">{children()}</div> }
 }
 
+
+/// The footer of a multi-select menu: `clear` and `done` buttons. Close the menu from `done` with
+/// [`close_open_menu`].
+#[component]
+pub fn MenuFoot(children: Children) -> impl IntoView {
+    view! { <div class="d-menu__foot">{children()}</div> }
+}
+
+/// Close whichever menu is open and return focus to its trigger.
+pub fn close_open_menu() {
+    close_menu(true);
+}

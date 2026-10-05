@@ -140,3 +140,102 @@ pub fn Tr(
 pub fn Td(#[prop(optional)] num: bool, children: Children) -> impl IntoView {
     view! { <td class=num.then_some("d-num")>{children()}</td> }
 }
+
+/// How an [`EditCell`] edits: text, number or date.
+#[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
+pub enum EditKind {
+    #[default]
+    Text,
+    Number,
+    Date,
+}
+
+impl EditKind {
+    fn attr(self) -> &'static str {
+        match self {
+            EditKind::Text => "text",
+            EditKind::Number => "number",
+            EditKind::Date => "date",
+        }
+    }
+}
+
+/// A cell that edits in place: click it, or focus it and press enter or f2, and it becomes an input. Enter or
+/// leaving the field calls `on_save` with the new text; esc cancels. Do not make a row both selectable and
+/// editable.
+///
+/// `children` render the display (formatted) value; `value` is the raw text the input starts with.
+#[component]
+pub fn EditCell(
+    /// Names the input (`description`, `amount`).
+    #[prop(into)]
+    label: String,
+    #[prop(optional)] kind: EditKind,
+    /// The raw value the input starts with.
+    #[prop(into)]
+    value: Signal<String>,
+    #[prop(into)] on_save: Callback<String>,
+    /// Right-align with tabular numerals.
+    #[prop(optional)]
+    num: bool,
+    children: ChildrenFn,
+) -> impl IntoView {
+    let editing = RwSignal::new(false);
+    let input = NodeRef::<leptos::html::Input>::new();
+    let begin = move || {
+        editing.set(true);
+    };
+    Effect::new(move |_| {
+        if editing.get() {
+            if let Some(i) = input.get() {
+                let _ = i.focus();
+                i.select();
+            }
+        }
+    });
+    let finish = move |save: bool| {
+        if !editing.get_untracked() {
+            return;
+        }
+        editing.set(false);
+        if save {
+            if let Some(i) = input.get_untracked() {
+                let v = i.value();
+                if v != value.get_untracked() {
+                    on_save.run(v);
+                }
+            }
+        }
+    };
+    let cell_label = label.clone();
+    view! {
+        <td class=num.then_some("d-num") data-edit=kind.attr() data-label=cell_label>
+            {move || if editing.get() {
+                view! {
+                    <input
+                        class="d-table__input" node_ref=input aria-label=label.clone()
+                        type=match kind { EditKind::Date => "date", _ => "text" }
+                        inputmode=(kind == EditKind::Number).then_some("decimal")
+                        prop:value=move || value.get()
+                        on:keydown=move |e| match e.key().as_str() {
+                            "Enter" => { e.prevent_default(); finish(true) }
+                            "Escape" => { e.prevent_default(); e.stop_propagation(); finish(false) }
+                            _ => {}
+                        }
+                        on:blur=move |_| finish(true)
+                    />
+                }.into_any()
+            } else {
+                view! {
+                    <span
+                        tabindex="0" role="button" style="display:block"
+                        on:click=move |_| begin()
+                        on:keydown=move |e| if e.key() == "Enter" || e.key() == "F2" { e.prevent_default(); begin() }
+                    >
+                        {children()}
+                    </span>
+                }.into_any()
+            }}
+        </td>
+    }
+}

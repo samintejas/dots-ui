@@ -70,6 +70,10 @@ pub fn Button(
     /// `type="submit"` instead of `type="button"`.
     #[prop(optional)]
     submit: bool,
+    /// A count on the corner of an icon button (notifications). Hidden at zero, `9+` above nine. Put the
+    /// number in `label` too.
+    #[prop(optional, into)]
+    count: Signal<u32>,
     children: Children,
 ) -> impl IntoView {
     view! {
@@ -85,6 +89,12 @@ pub fn Button(
         >
             {move || busy.get().then(|| view! { <Spinner decorative=true/> })}
             {children()}
+            {move || {
+                let n = count.get();
+                (n > 0).then(|| view! {
+                    <span class="d-btn__count" aria-hidden="true">{if n > 9 { "9+".to_string() } else { n.to_string() }}</span>
+                })
+            }}
         </button>
     }
 }

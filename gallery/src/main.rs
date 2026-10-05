@@ -204,6 +204,27 @@ fn ComponentTour(
         r
     });
     let progress = RwSignal::new(42.0);
+    let tags = RwSignal::new(vec!["groceries".to_string()]);
+    let f_type = RwSignal::new(Vec::<String>::new());
+    let f_who = RwSignal::new(vec!["all".to_string()]);
+    let query = RwSignal::new(String::new());
+    let page = RwSignal::new(1usize);
+    let page_size = RwSignal::new(10usize);
+    let messages = RwSignal::new(Vec::<ChatMessage>::new());
+    let next_id = RwSignal::new(0u64);
+    let bar_error = RwSignal::new(None::<String>);
+    let on_send = move |q: String| {
+        let id = next_id.get_untracked();
+        next_id.set(id + 2);
+        messages.update(|m| {
+            m.push(ChatMessage { id, from: ChatFrom::Me, text: q, pending: false });
+            m.push(ChatMessage { id: id + 1, from: ChatFrom::Them, text: "home loan: 89 months left.".into(), pending: true });
+        });
+        set_timeout(
+            move || messages.update(|m| if let Some(x) = m.iter_mut().find(|x| x.id == id + 1) { x.pending = false }),
+            std::time::Duration::from_millis(900),
+        );
+    };
 
     view! {
         <Section title="button">
@@ -303,6 +324,36 @@ fn ComponentTour(
             <WorkspaceSteps label="setup steps" current=ws steps=vec!["account".to_string(), "keys".to_string()]/>
             <EmptyState title="no panes yet" hint="split the workspace to start."><Button>"new pane"</Button></EmptyState>
             <EmptyError title="could not load panes" hint="config is not valid toml (line 12)."><Button>"retry"</Button></EmptyError>
+        </Section>
+        <Section title="meter, ring, pager">
+            <MeterRow label="groceries" value=45.0 output="₹6,110"/>
+            <MeterRow label="rent" value=100.0 output="₹14,000" cat=2u8/>
+            <MeterRow label="travel" value=120.0 output="over budget" severity=Severity::Danger/>
+            <Ring value=51.0 number="89" caption="months left" label="home loan, 91 of 180 months paid"/>
+            <Pager total=248usize page=page page_size=page_size/>
+        </Section>
+        <Section title="filter bar, tag input, input bar">
+            <FilterBar label="filters">
+                <FilterSearch label="search transactions" value=query placeholder="search description or tag"/>
+                <Filter label="type" options=vec![FilterOption::new("debit", "debit").meta("money out"), FilterOption::new("credit", "credit").meta("money in")] selected=f_type/>
+                <Filter label="person" single=true empty="everyone" options=vec![FilterOption::new("all", "everyone"), FilterOption::new("me", "samin")] selected=f_who/>
+            </FilterBar>
+            <TagInput label="tags" value=tags suggestions=vec!["groceries".to_string(), "transport".to_string(), "rent".to_string()] hint="pick from the list, or type and press comma"/>
+            <InputBar label="add a transaction" on_submit=move |()| bar_error.set(Some("enter an amount above zero".into())) error=bar_error>
+                <InputSeg caption="description" flex="3 1 220px"><input class="d-inputbar__input" type="text" placeholder="what was it"/></InputSeg>
+                <InputSeg caption="amount" num=true><input class="d-inputbar__input" type="text" inputmode="decimal" placeholder="0"/></InputSeg>
+                <InputBarSubmit>"add"</InputBarSubmit>
+            </InputBar>
+            <Avatar initials="ac" name="acme inc" square=true size=AvatarSize::Lg/>
+            <Avatar initials="st" name="samin t" size=AvatarSize::Xl status=Presence::Online/>
+            <Button icon=true variant=ButtonVariant::Ghost label="notifications, 12 unread" count=12u32><Icon name="bell"/></Button>
+        </Section>
+        <Section title="chat">
+            <div style="height:360px">
+                <Chat name="tracer" label="ask tracer" title="ask tracer" intro="answers come from your own transactions and accounts."
+                    messages=messages on_send=on_send suggestions=vec!["when do my loans end?".to_string()]
+                    placeholder="ask anything about your money"/>
+            </div>
         </Section>
         <Section title="overlays">
             <div class="d-row" style="gap:var(--space-8)">

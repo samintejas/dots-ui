@@ -8,7 +8,7 @@ same native and ARIA attributes the stylesheet reads (`aria-selected`, `data-sta
 signals. It does not need `dots.js`.
 
 - Leptos **0.8** (stable). Features `csr`, `hydrate`, `ssr` are forwarded to `leptos`; enable the one your app uses.
-- 60+ components and parts, the full stylesheet, tokens, Geist Mono and 46 Lucide icons are in the crate.
+- 60+ components and parts, the full stylesheet, tokens, Geist Mono and 56 Lucide icons are in the crate.
 - Browser baseline: evergreen since early 2024 (`<dialog>`, `:has()`, container queries, `color-mix()`).
 
 ## use it
@@ -64,11 +64,11 @@ The gallery in `gallery/` uses every component: `gallery/build.sh` then
 
 | area | components |
 |---|---|
-| actions | `Button`, `ButtonLink`, `Menu`, `ContextMenu`, `MenuItem`, `MenuLink`, `MenuCheckbox`, `MenuRadioGroup`, `MenuRadio`, `MenuSeparator`, `MenuLabel`, `MenuHead` |
-| forms | `TextField`, `Select`, `Checkbox`, `RadioGroup` + `Radio`, `Switch`, `Slider`, `Field`, `Label`, `Hint`, `ErrorText` |
-| status | `StatusChip`, `StatusButton`, `Badge`, `Tag`, `Progress`, `ProgressRow`, `Spinner`, `Toast` + `ToastProvider` + `use_toasts()` |
-| content | `Card` (`CardHead`, `CardBody`, `CardFoot`, `CardButton`, `CardLink`), `List`, `ListItem`, `Listbox`, `ListOption`, `Table` (`Th`, `Tr`, `Td`), `Accordion`, `CodeBlock`, `HeroMetric`, `HeroClock`, `EmptyState`, `EmptyLoading`, `EmptyError`, `Avatar`, `Kbd`/`Keys`, `Divider`, `Surface` (elevation) |
-| navigation | `Tabs` (`TabList`, `Tab`, `TabPanel`), `Breadcrumbs`, `WorkspaceDots`, `WorkspaceSteps`, `CommandPalette` |
+| actions | `Button`, `ButtonLink`, `Menu`, `ContextMenu`, `MenuItem`, `MenuLink`, `MenuCheckbox`, `MenuRadioGroup`, `MenuRadio`, `MenuSeparator`, `MenuLabel`, `MenuHead`, `MenuFoot` |
+| forms | `FilterBar` (`FilterSearch`, `Filter`, `FilterActive`), `InputBar` (`InputSeg`, `InputBarSubmit`), `TagInput`, `TextField`, `Select`, `Checkbox`, `RadioGroup` + `Radio`, `Switch`, `Slider`, `Field`, `Label`, `Hint`, `ErrorText` |
+| status | `StatusChip`, `StatusButton`, `Badge`, `Tag`, `Progress`, `ProgressRow`, `Meter`, `MeterRow`, `Ring`, `Spinner`, `Toast` + `ToastProvider` + `use_toasts()` |
+| content | `Card` (`CardHead`, `CardBody`, `CardFoot`, `CardButton`, `CardLink`), `List`, `ListItem`, `Listbox`, `ListOption`, `Table` (`Th`, `Tr`, `Td`, `EditCell`), `Accordion`, `CodeBlock`, `HeroMetric`, `HeroClock`, `EmptyState`, `EmptyLoading`, `EmptyError`, `Avatar` (`AvatarImage`, `AvatarGroup`, `Identity`), `Kbd`/`Keys`, `Divider`, `Surface` (elevation) |
+| navigation | `Tabs` (`TabList`, `Tab`, `TabPanel`), `Breadcrumbs`, `Pager`, `Chat`, `WorkspaceDots`, `WorkspaceSteps`, `CommandPalette` |
 | layout | `Shell`, `ShellMain`, `Main`, `SkipLink`, `ShellToggle`, `AppBar` (+ parts), `Sidebar` (+ switcher, filter, groups, items, parents, actions, account), `RightBar`, `BottomBar`, `SplitPane` + `Pane` |
 | overlays | `Dialog`, `Sheet`, `DialogClose`, `use_dialog()`, tooltips via `data-tooltip` |
 | setup | `DotsProvider`, `ThemeProvider`, `use_theme()`, `DotsStyles`, `Icon`, `icon_names()` |
