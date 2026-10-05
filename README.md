@@ -1,0 +1,106 @@
+# dots-design
+
+Leptos components for the **dots** design system: monochrome, monospace, dense. Grey carries structure, colour
+appears only to signal state, dark is canonical.
+
+Every component is a thin, accessible `view!` over the markup the design system documents. State lives in the
+same native and ARIA attributes the stylesheet reads (`aria-selected`, `data-state`, …) and is driven by
+signals. It does not need `dots.js`.
+
+- Leptos **0.8** (stable). Features `csr`, `hydrate`, `ssr` are forwarded to `leptos`; enable the one your app uses.
+- 60+ components and parts, the full stylesheet, tokens, Geist Mono and 46 Lucide icons are in the crate.
+- Browser baseline: evergreen since early 2024 (`<dialog>`, `:has()`, container queries, `color-mix()`).
+
+## use it
+
+```toml
+# Cargo.toml
+[dependencies]
+dots-design = { git = "https://github.com/<you>/dots-design", features = ["csr"] } # or path = "../dots-design"
+```
+
+Load the styles once, wrap the app in `DotsProvider`, and serve the fonts:
+
+```rust
+use dots_design::prelude::*;
+use leptos::prelude::*;
+
+#[component]
+fn App() -> impl IntoView {
+    view! {
+        <DotsStyles font_base="/fonts/"/>      // inlines tokens.css + dots.css
+        <DotsProvider persist_theme="app:theme"> // theme, toasts, tooltips
+            <SkipLink/>
+            <Main>
+                <Button variant=ButtonVariant::Primary>"deploy"</Button>
+            </Main>
+        </DotsProvider>
+    }
+}
+```
+
+Fonts: serve `dots_design::assets::FONTS` yourself, or call `dots_design::assets::write_to("style")` from a
+`build.rs`/xtask to drop `tokens.css`, `dots.css` and `fonts/` into a directory that Trunk or cargo-leptos
+bundles (then skip `DotsStyles`). `tokens.css` expects the fonts at `./fonts/` next to it.
+
+The gallery in `gallery/` uses every component: `gallery/build.sh` then
+`python3 -m http.server -d gallery/dist 8080` (needs the target `wasm32-unknown-unknown` and a
+`wasm-bindgen` CLI matching `Cargo.lock`).
+
+## conventions
+
+- **Reactive props** take a value, a signal or a closure: `disabled=true`, `disabled=sig`, `disabled=move || x.get()`.
+- **Two-way controls** take an `RwSignal`: `TextField value=…`, `Checkbox checked=…`, `Tabs value=…`, `Dialog open=…`.
+- **Passthrough**: `on:click=…`, `attr:id=…` and `class:name=cond` work on every component and reach its root
+  element. Do not use `attr:class`, it *replaces* the component's classes; use `class:name=true`.
+- **Children are the label.** Labels follow the voice rules: lowercase verbs (`deploy`, `delete workspace`), errors
+  start with `error:`, no `ok`/`submit`.
+- **State is never colour-only**: severities pair colour with an icon, glyph or word, as the design system requires.
+- **Native first**: `<dialog>`, `<details>`, `<select>`, checkbox, radio and range are the real elements. Focus
+  trapping, esc and find-in-page come from the platform.
+- Unique ids (labels, panels, menus) come from `leptos`' shared context under SSR/hydration, so they match.
+
+## what is in it
+
+| area | components |
+|---|---|
+| actions | `Button`, `ButtonLink`, `Menu`, `ContextMenu`, `MenuItem`, `MenuLink`, `MenuCheckbox`, `MenuRadioGroup`, `MenuRadio`, `MenuSeparator`, `MenuLabel`, `MenuHead` |
+| forms | `TextField`, `Select`, `Checkbox`, `RadioGroup` + `Radio`, `Switch`, `Slider`, `Field`, `Label`, `Hint`, `ErrorText` |
+| status | `StatusChip`, `StatusButton`, `Badge`, `Tag`, `Progress`, `ProgressRow`, `Spinner`, `Toast` + `ToastProvider` + `use_toasts()` |
+| content | `Card` (`CardHead`, `CardBody`, `CardFoot`, `CardButton`, `CardLink`), `List`, `ListItem`, `Listbox`, `ListOption`, `Table` (`Th`, `Tr`, `Td`), `Accordion`, `CodeBlock`, `HeroMetric`, `HeroClock`, `EmptyState`, `EmptyLoading`, `EmptyError`, `Avatar`, `Kbd`/`Keys`, `Divider`, `Surface` (elevation) |
+| navigation | `Tabs` (`TabList`, `Tab`, `TabPanel`), `Breadcrumbs`, `WorkspaceDots`, `WorkspaceSteps`, `CommandPalette` |
+| layout | `Shell`, `ShellMain`, `Main`, `SkipLink`, `ShellToggle`, `AppBar` (+ parts), `Sidebar` (+ switcher, filter, groups, items, parents, actions, account), `RightBar`, `BottomBar`, `SplitPane` + `Pane` |
+| overlays | `Dialog`, `Sheet`, `DialogClose`, `use_dialog()`, tooltips via `data-tooltip` |
+| setup | `DotsProvider`, `ThemeProvider`, `use_theme()`, `DotsStyles`, `Icon`, `icon_names()` |
+
+## behaviour you should know
+
+- **Menu**: `trigger` must render one focusable element; it is wired in place (no wrapper element). The panel is
+  moved to `<body>` (or the open dialog) while shown so nothing clips it. One level, no submenus.
+- **Tooltips**: any element with `data-tooltip="…"` gets one (300ms hover, immediate on keyboard focus, esc
+  closes). `Button` has a `tooltip` prop.
+- **Table**: you own the data and the sort. `Th sort=… on_sort=…`, `Tr selectable selected=… on_select=…`; see the
+  gallery for a sortable, selectable table.
+- **CodeBlock**: plain text by default. For highlighting set `html` and pass markup using the `tk-*` token
+  classes (one token span never crosses a line break; you escape).
+- **Shell**: needs a fixed height (`100dvh` by default). Ctrl+B / Ctrl+Alt+B / Ctrl+J toggle the bars, the tiles
+  stack under 768px, and `persist="key"` remembers the state. Drive it from outside with `ShellState`.
+- **Dialog**: `dismiss=false` ignores the scrim and focuses the first footer button (cancel).
+- **Theme**: `use_theme()` is an `RwSignal<Theme>` mirrored to `data-theme` on `<html>`.
+
+## refreshing from the design system
+
+`assets/dots.css` is the design system's `components/bundle.css`, `assets/tokens.css` is `assets/Tokens/tokens.css`,
+fonts are `fonts/`. To pick up a new release, copy them over and regenerate the icon table:
+
+```sh
+scripts/gen_icons.py path/to/components/bundle.js
+```
+
+Class names and attributes are the contract: when a component's README changes, change the matching file in
+`src/components/`.
+
+## licences
+
+Geist Mono is SIL OFL 1.1 (`assets/fonts/LICENSE.txt`); Lucide icons are ISC/MIT (`assets/LICENSE-lucide.txt`).
+Add a licence for this crate before publishing it.

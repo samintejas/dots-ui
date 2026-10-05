@@ -1,0 +1,60 @@
+[package]
+name = "dots-design"
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.88"
+description = "Leptos components for the dots design system: monochrome, monospace, dense."
+readme = "README.md"
+include = ["src/**", "assets/**", "README.md", "Cargo.toml"]
+
+[lib]
+name = "dots_design"
+
+[dependencies]
+leptos = { version = "0.8.21" }
+js-sys = "0.3"
+wasm-bindgen = "0.2"
+wasm-bindgen-futures = "0.4"
+
+[dependencies.web-sys]
+version = "0.3"
+features = [
+  "AddEventListenerOptions",
+  "CssStyleDeclaration",
+  "CustomEvent",
+  "DateTimeValue",
+  "DomRect",
+  "Element",
+  "Event",
+  "EventTarget",
+  "FocusEvent",
+  "HtmlDialogElement",
+  "HtmlElement",
+  "HtmlInputElement",
+  "KeyboardEvent",
+  "Location",
+  "MediaQueryList",
+  "MouseEvent",
+  "Navigator",
+  "Node",
+  "NodeList",
+  "ResizeObserver",
+  "ResizeObserverEntry",
+  "ScrollIntoViewOptions",
+  "ScrollLogicalPosition",
+  "Storage",
+  "Window",
+  "Document",
+  "DocumentFragment",
+  "HtmlCollection",
+]
+
+[features]
+default = []
+# forwarded to leptos: enable exactly the one your app needs, as you would for leptos itself.
+csr = ["leptos/csr"]
+hydrate = ["leptos/hydrate"]
+ssr = ["leptos/ssr"]
+
+[workspace]
+members = ["gallery"]
