@@ -41,7 +41,7 @@ pub fn InputBar(
 /// `composite` and `for_id` so the caption labels it instead.
 #[component]
 pub fn InputSeg(
-    #[prop(into)] caption: String,
+    #[prop(into)] caption: Signal<String>,
     /// CSS `flex`, like `"3 1 220px"`: give the free-text segment the room.
     #[prop(optional, into)]
     flex: Option<String>,
@@ -59,7 +59,7 @@ pub fn InputSeg(
     if composite {
         view! {
             <div class=class style=style>
-                <label class="d-inputbar__cap" for=for_id>{caption}</label>
+                <label class="d-inputbar__cap" for=for_id>{move || caption.get()}</label>
                 {children()}
             </div>
         }
@@ -67,7 +67,7 @@ pub fn InputSeg(
     } else {
         view! {
             <label class=class style=style>
-                <span class="d-inputbar__cap">{caption}</span>
+                <span class="d-inputbar__cap">{move || caption.get()}</span>
                 {children()}
             </label>
         }
