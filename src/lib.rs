@@ -5,7 +5,7 @@
 //! signals; no JavaScript from `dots.js` is needed.
 //!
 //! ```ignore
-//! use dots_design::prelude::*;
+//! use dots_ui::prelude::*;
 //!
 //! #[component]
 //! fn App() -> impl IntoView {
@@ -34,7 +34,7 @@ pub use icon::Icon;
 pub use theme::{Theme, ThemeProvider, use_theme};
 pub use types::*;
 
-/// Everything you normally want in scope: `use dots_design::prelude::*;`.
+/// Everything you normally want in scope: `use dots_ui::prelude::*;`.
 pub mod prelude {
     pub use crate::assets::DotsStyles;
     pub use crate::components::*;

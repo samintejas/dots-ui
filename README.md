@@ -1,4 +1,4 @@
-# dots-design
+# dots-ui
 
 Leptos components for the **dots** design system: monochrome, monospace, dense. Grey carries structure, colour
 appears only to signal state, dark is canonical.
@@ -16,14 +16,14 @@ signals. It does not need `dots.js`.
 ```toml
 # Cargo.toml
 [dependencies]
-dots-design = { version = "0.1", features = ["csr"] }
-# or straight from git: dots-design = { git = "https://github.com/samintejas/dots-design-system", features = ["csr"] }
+dots-ui = { version = "0.1", features = ["csr"] }
+# or straight from git: dots-ui = { git = "https://github.com/samintejas/dots-ui", features = ["csr"] }
 ```
 
 Load the styles once, wrap the app in `DotsProvider`, and serve the fonts:
 
 ```rust
-use dots_design::prelude::*;
+use dots_ui::prelude::*;
 use leptos::prelude::*;
 
 #[component]
@@ -40,7 +40,7 @@ fn App() -> impl IntoView {
 }
 ```
 
-Fonts: serve `dots_design::assets::FONTS` yourself, or call `dots_design::assets::write_to("style")` from a
+Fonts: serve `dots_ui::assets::FONTS` yourself, or call `dots_ui::assets::write_to("style")` from a
 `build.rs`/xtask to drop `tokens.css`, `dots.css` and `fonts/` into a directory that Trunk or cargo-leptos
 bundles (then skip `DotsStyles`). `tokens.css` expects the fonts at `./fonts/` next to it.
 

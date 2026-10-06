@@ -1,4 +1,4 @@
-use dots_design::prelude::*;
+use dots_ui::prelude::*;
 use leptos::prelude::*;
 
 fn main() {
@@ -155,7 +155,7 @@ fn Gallery() -> impl IntoView {
                         <ShellToggle region=Region::Bottom label="toggle logs">"logs"</ShellToggle>
                     }
                 >
-                    <CodeBlock title="build.log" cursor=true code="$ cargo build\n   Compiling dots-design\n    Finished dev"/>
+                    <CodeBlock title="build.log" cursor=true code="$ cargo build\n   Compiling dots-ui\n    Finished dev"/>
                 </BottomBar>
             </ShellMain>
 

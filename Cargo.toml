@@ -1,18 +1,18 @@
 [package]
-name = "dots-design"
+name = "dots-ui"
 version = "0.1.0"
 edition = "2024"
 rust-version = "1.88"
 description = "Leptos components for the dots design system: monochrome, monospace, dense."
 readme = "README.md"
 license = "MIT"
-repository = "https://github.com/samintejas/dots-design-system"
+repository = "https://github.com/samintejas/dots-ui"
 keywords = ["leptos", "design-system", "ui", "components", "wasm"]
 categories = ["gui", "web-programming", "wasm"]
 include = ["src/**", "assets/**", "README.md", "LICENSE", "Cargo.toml"]
 
 [lib]
-name = "dots_design"
+name = "dots_ui"
 
 [dependencies]
 leptos = { version = "0.8.21" }

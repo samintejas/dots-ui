@@ -283,7 +283,16 @@ dependencies = [
 ]
 
 [[package]]
-name = "dots-design"
+name = "dots-gallery"
+version = "0.1.0"
+dependencies = [
+ "console_error_panic_hook",
+ "dots-ui",
+ "leptos",
+]
+
+[[package]]
+name = "dots-ui"
 version = "0.1.0"
 dependencies = [
  "js-sys",
@@ -291,15 +300,6 @@ dependencies = [
  "wasm-bindgen",
  "wasm-bindgen-futures",
  "web-sys",
-]
-
-[[package]]
-name = "dots-gallery"
-version = "0.1.0"
-dependencies = [
- "console_error_panic_hook",
- "dots-design",
- "leptos",
 ]
 
 [[package]]

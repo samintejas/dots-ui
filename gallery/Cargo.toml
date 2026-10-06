@@ -5,6 +5,6 @@ edition = "2024"
 publish = false
 
 [dependencies]
-dots-design = { path = "..", features = ["csr"] }
+dots-ui = { path = "..", features = ["csr"] }
 leptos = { version = "0.8.21", features = ["csr"] }
 console_error_panic_hook = "0.1"

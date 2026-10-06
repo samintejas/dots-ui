@@ -12,7 +12,7 @@ pub fn icon_names() -> &'static [&'static str] {
 fn svg(name: &str) -> String {
     debug_assert!(
         name.is_empty() || icon_data::inner(name).is_some(),
-        "dots-design: unknown icon `{name}`"
+        "dots-ui: unknown icon `{name}`"
     );
     format!(
         "<svg viewBox=\"0 0 24 24\" focusable=\"false\">{}</svg>",
