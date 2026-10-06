@@ -16,7 +16,8 @@ signals. It does not need `dots.js`.
 ```toml
 # Cargo.toml
 [dependencies]
-dots-design = { git = "https://github.com/<you>/dots-design", features = ["csr"] } # or path = "../dots-design"
+dots-design = { version = "0.1", features = ["csr"] }
+# or straight from git: dots-design = { git = "https://github.com/samintejas/dots-design-system", features = ["csr"] }
 ```
 
 Load the styles once, wrap the app in `DotsProvider`, and serve the fonts:
@@ -104,3 +105,8 @@ Class names and attributes are the contract: when a component's README changes, 
 
 Geist Mono is SIL OFL 1.1 (`assets/fonts/LICENSE.txt`); Lucide icons are ISC/MIT (`assets/LICENSE-lucide.txt`).
 Add a licence for this crate before publishing it.
+
+## licence
+
+MIT (see `LICENSE`). Geist Mono is bundled under the SIL Open Font License 1.1 (`assets/fonts/LICENSE.txt`) and the
+icons come from Lucide, ISC (`assets/LICENSE-lucide.txt`).
