@@ -213,12 +213,15 @@ fn ComponentTour(
     let messages = RwSignal::new(Vec::<ChatMessage>::new());
     let next_id = RwSignal::new(0u64);
     let bar_error = RwSignal::new(None::<String>);
+    let seg = RwSignal::new("expense".to_string());
+    let step = RwSignal::new(1usize);
+    let section = RwSignal::new(true);
     let on_send = move |q: String| {
         let id = next_id.get_untracked();
         next_id.set(id + 2);
         messages.update(|m| {
-            m.push(ChatMessage { id, from: ChatFrom::Me, text: q, pending: false });
-            m.push(ChatMessage { id: id + 1, from: ChatFrom::Them, text: "home loan: 89 months left.".into(), pending: true });
+            m.push(ChatMessage::new(id, ChatFrom::Me, q));
+            m.push(ChatMessage::new(id + 1, ChatFrom::Them, "home loan: 89 months left.").pending().steps(vec![ChatStep::new("found the home loan", StepState::Done), ChatStep::new("reading the schedule", StepState::Active)]));
         });
         set_timeout(
             move || messages.update(|m| if let Some(x) = m.iter_mut().find(|x| x.id == id + 1) { x.pending = false }),
@@ -347,6 +350,50 @@ fn ComponentTour(
             <Avatar initials="ac" name="acme inc" square=true size=AvatarSize::Lg/>
             <Avatar initials="st" name="samin t" size=AvatarSize::Xl status=Presence::Online/>
             <Button icon=true variant=ButtonVariant::Ghost label="notifications, 12 unread" count=12u32><Icon name="bell"/></Button>
+        </Section>
+        <Section title="segmented, stepper, setting rows, copy value">
+            <Segmented value=seg label="kind of transaction" large=true fill=true>
+                <SegOption value="expense">"expense"</SegOption>
+                <SegOption value="income">"income"</SegOption>
+                <SegOption value="transfer" disabled=true>"transfer"</SegOption>
+            </Segmented>
+            <Stepper steps=vec!["kind".to_string(), "details".to_string(), "review".to_string()] current=step/>
+            <Card>
+                <CardBody>
+                    <SettingRows>
+                        <SettingRow label="theme" hint="dark is the reference">
+                            <Segmented value=seg label="theme">
+                                <SegOption value="expense" aria_label="dark"><Icon name="moon"/></SegOption>
+                                <SegOption value="income" aria_label="light"><Icon name="sun"/></SegOption>
+                            </Segmented>
+                        </SettingRow>
+                        <SettingRow label="email me about renewals" toggle=true><input type="checkbox" role="switch" class="d-switch"/></SettingRow>
+                    </SettingRows>
+                </CardBody>
+            </Card>
+            <CopyValue value="7f3c9e2a-41b8-4d0e-9a51-2f7c8e1d4b60" label="transaction id" max_width="200px"/>
+        </Section>
+        <Section title="section nav, feed, app switcher, status page">
+            <SectionNavLayout>
+                <SectionNav label="account">
+                    <SectionNavItem href="#profile" icon="user" current=section>"profile"</SectionNavItem>
+                    <SectionNavItem href="#security" icon="lock">"security"</SectionNavItem>
+                    <SectionNavLabel>"apps"</SectionNavLabel>
+                    <SectionNavItem href="#connectors" icon="plug">"connectors"</SectionNavItem>
+                </SectionNav>
+                <Card>
+                    <Feed label="notifications">
+                        <FeedItem title="streaming video renews tomorrow" text="₹649 from card, anita" time="today" unread=true on_click=|_| ()/>
+                        <FeedItem title="home loan emi is due" time="yesterday" unread=true severity=Severity::Warning href="#loan"/>
+                        <FeedItem title="anita joined rao family" time="05 oct"/>
+                    </Feed>
+                </Card>
+            </SectionNavLayout>
+            <AppSwitcher apps=vec![AppEntry::new("fin", "wallet", "#fin").current(), AppEntry::new("account", "user", "#account"), AppEntry::new("notes", "scroll-text", "").disabled()]/>
+            <style>".gal-status .d-status-page{min-height:420px}"</style>
+            <div class="gal-status" style="border:1px solid var(--border-default)">
+                <StatusPage kind=StatusKind::NotFound title="you are lost" foot="pebblelab/fin"><a class="d-link" href="#">"click here to go home"</a></StatusPage>
+            </div>
         </Section>
         <Section title="chat">
             <div style="height:360px">

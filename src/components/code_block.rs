@@ -8,7 +8,7 @@ use wasm_bindgen_futures::JsFuture;
 use crate::icon::Icon;
 use crate::util::dom;
 
-async fn write_clipboard(text: &str) -> bool {
+pub(super) async fn write_clipboard(text: &str) -> bool {
     let nav: JsValue = window().navigator().into();
     if let Ok(clip) = js_sys::Reflect::get(&nav, &"clipboard".into()) {
         if !clip.is_undefined() && !clip.is_null() {

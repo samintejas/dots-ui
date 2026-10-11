@@ -16,7 +16,7 @@ signals. It does not need `dots.js`.
 ```toml
 # Cargo.toml
 [dependencies]
-dots-ui = { version = "0.1", features = ["csr"] }
+dots-ui = { version = "0.2", features = ["csr"] }
 # or straight from git: dots-ui = { git = "https://github.com/samintejas/dots-ui", features = ["csr"] }
 ```
 
@@ -66,10 +66,10 @@ The gallery in `gallery/` uses every component: `gallery/build.sh` then
 | area | components |
 |---|---|
 | actions | `Button`, `ButtonLink`, `Menu`, `ContextMenu`, `MenuItem`, `MenuLink`, `MenuCheckbox`, `MenuRadioGroup`, `MenuRadio`, `MenuSeparator`, `MenuLabel`, `MenuHead`, `MenuFoot` |
-| forms | `FilterBar` (`FilterSearch`, `Filter`, `FilterActive`), `InputBar` (`InputSeg`, `InputBarSubmit`), `TagInput`, `TextField`, `Select`, `Checkbox`, `RadioGroup` + `Radio`, `Switch`, `Slider`, `Field`, `Label`, `Hint`, `ErrorText` |
+| forms | `FilterBar` (`FilterSearch`, `Filter`, `FilterActive`), `InputBar` (`InputSeg`, `InputBarSubmit`), `TagInput`, `TextField`, `Select`, `Checkbox`, `RadioGroup` + `Radio`, `Switch`, `Slider`, `Segmented` + `SegOption`, `SettingRows` + `SettingRow`, `Field`, `Label`, `Hint`, `ErrorText` |
 | status | `StatusChip`, `StatusButton`, `Badge`, `Tag`, `Progress`, `ProgressRow`, `Meter`, `MeterRow`, `Ring`, `Spinner`, `Toast` + `ToastProvider` + `use_toasts()` |
-| content | `Card` (`CardHead`, `CardBody`, `CardFoot`, `CardButton`, `CardLink`), `List`, `ListItem`, `Listbox`, `ListOption`, `Table` (`Th`, `Tr`, `Td`, `EditCell`), `Accordion`, `CodeBlock`, `HeroMetric`, `HeroClock`, `EmptyState`, `EmptyLoading`, `EmptyError`, `Avatar` (`AvatarImage`, `AvatarGroup`, `Identity`), `Kbd`/`Keys`, `Divider`, `Surface` (elevation) |
-| navigation | `Tabs` (`TabList`, `Tab`, `TabPanel`), `Breadcrumbs`, `Pager`, `Chat`, `WorkspaceDots`, `WorkspaceSteps`, `CommandPalette` |
+| content | `Card` (`CardHead`, `CardBody`, `CardFoot`, `CardButton`, `CardLink`), `List`, `ListItem`, `Listbox`, `ListOption`, `Table` (`Th`, `Tr`, `Td`, `EditCell`), `Accordion`, `CodeBlock`, `HeroMetric`, `HeroClock`, `EmptyState`, `EmptyLoading`, `EmptyError`, `Avatar` (`AvatarImage`, `AvatarGroup`, `Identity`), `Kbd`/`Keys`, `Divider`, `Surface` (elevation), `Feed` + `FeedItem`, `CopyValue`, `StatusPage`, `Pebbles` |
+| navigation | `Tabs` (`TabList`, `Tab`, `TabPanel`), `Breadcrumbs`, `Pager`, `SectionNav` (+ layout, item, label), `Stepper`, `AppSwitcher`, `Chat` (steps, copy/retry), `WorkspaceDots`, `WorkspaceSteps`, `CommandPalette` |
 | layout | `Shell`, `ShellMain`, `Main`, `SkipLink`, `ShellToggle`, `AppBar` (+ parts), `Sidebar` (+ switcher, filter, groups, items, parents, actions, account), `RightBar`, `BottomBar`, `SplitPane` + `Pane` |
 | overlays | `Dialog`, `Sheet`, `DialogClose`, `use_dialog()`, tooltips via `data-tooltip` |
 | setup | `DotsProvider`, `ThemeProvider`, `use_theme()`, `DotsStyles`, `Icon`, `icon_names()` |
