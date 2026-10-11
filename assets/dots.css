@@ -1561,3 +1561,5 @@ details:not([open]):has(.d-sidebar__subbtn[aria-current]) > summary.d-sidebar__b
 /* the switch thumb is centred on the track's middle line, so it sits evenly at any zoom */
 .d-switch::before { top: 50%; transform: translate(0, -50%); }
 .d-switch:checked::before { transform: translate(14px, -50%); }
+/* an input bar never shrinks inside a flex column (its rounded corners clip without making it a scroll box) */
+.d-inputbar { overflow: clip; flex-shrink: 0; }
