@@ -1,5 +1,7 @@
 use leptos::prelude::*;
 
+use crate::icon::Icon;
+
 /// Who sent a [`ChatMessage`].
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum From {
@@ -7,16 +9,35 @@ pub enum From {
     Them,
 }
 
-/// One message in a [`Chat`]. A `pending` message shows three pulsing dots until its text is set.
+/// One message in a [`Chat`]. A `pending` message shows a shimmering `thinking` (or its steps) until its text is set.
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub struct ChatMessage {
     pub id: u64,
     pub from: From,
     pub text: String,
     pub pending: bool,
+    /// The work behind an answer, shown folded above it (`worked through 3 steps`). Empty for none.
+    pub steps: Vec<String>,
+    /// How many of `steps` are finished while the answer is pending; the next one shows as active.
+    pub steps_done: usize,
 }
 
-/// A conversation with an assistant: a scrolling log, suggested questions and a composer at the bottom.
+impl ChatMessage {
+    pub fn me(id: u64, text: impl Into<String>) -> Self {
+        ChatMessage { id, from: From::Me, text: text.into(), pending: false, steps: vec![], steps_done: 0 }
+    }
+    pub fn them(id: u64, text: impl Into<String>) -> Self {
+        ChatMessage { id, from: From::Them, text: text.into(), pending: false, steps: vec![], steps_done: 0 }
+    }
+    /// A reply still being worked on.
+    pub fn pending(id: u64, steps: Vec<String>) -> Self {
+        ChatMessage { id, from: From::Them, text: String::new(), pending: true, steps, steps_done: 0 }
+    }
+}
+
+/// The assistant screen. Empty, it is a title and one big composer with suggestions under it; once a question
+/// is asked the composer docks at the bottom and the conversation reads like a document: your turns are small
+/// bubbles on the right, answers run across the column with their work folded above and copy / retry under.
 ///
 /// You own `messages`. `on_send` fires with the question (the person's message is not added for you; push it
 /// and then a `pending` reply, and replace the reply's text when the answer arrives). Give the chat a height.
@@ -43,6 +64,12 @@ pub fn Chat(
     /// The showcase entry point: only until the first message.
     #[prop(optional)]
     hero: bool,
+    /// Extra controls for the composer's tool row, left of the send button (an attach button, a scope picker).
+    #[prop(optional)]
+    tools: Option<ChildrenFn>,
+    /// Retry fires with the question an answer was for. Without it there is no retry button.
+    #[prop(optional, into)]
+    on_retry: Option<Callback<String>>,
 ) -> impl IntoView {
     let text = RwSignal::new(String::new());
     let log = NodeRef::<leptos::html::Div>::new();
@@ -84,22 +111,69 @@ pub fn Chat(
                         <p>{intro.clone()}</p>
                     </div>
                 })}
-                {let name = name.clone(); move || messages.get().into_iter().map(|m| {
-                    let from = match m.from { From::Me => "me", From::Them => "them" };
-                    let who = match m.from { From::Me => "you".to_string(), From::Them => name.clone() };
-                    view! {
-                        <div class="d-chat__msg" data-from=from>
-                            <span class="d-chat__who">{who}</span>
-                            <div class="d-chat__text">
-                                {if m.pending {
-                                    view! { <span class="d-spinner" role="status"><i></i><i></i><i></i><span class="d-sr">"thinking"</span></span> }.into_any()
-                                } else {
-                                    m.text.into_any()
-                                }}
+                {let name = name.clone(); move || {
+                    let all = messages.get();
+                    all.iter().enumerate().map(|(i, m)| {
+                        let m = m.clone();
+                        let from = match m.from { From::Me => "me", From::Them => "them" };
+                        let who = match m.from { From::Me => "you".to_string(), From::Them => name.clone() };
+                        // the question this answer was for, for retry
+                        let asked = all[..i].iter().rev().find(|p| p.from == From::Me).map(|p| p.text.clone());
+                        let steps = (!m.steps.is_empty()).then(|| {
+                            let n = m.steps.len();
+                            let summary = if m.pending { None } else { Some(format!("worked through {n} steps")) };
+                            view! {
+                                <details class="d-chat__steps" open=m.pending>
+                                    <summary>{match summary {
+                                        Some(t) => t.into_any(),
+                                        None => view! { <span class="d-chat__thinking" role="status">"working"</span> }.into_any(),
+                                    }}</summary>
+                                    <ol>{m.steps.iter().enumerate().map(|(j, t)| {
+                                        let state = if !m.pending || j < m.steps_done { "done" } else if j == m.steps_done { "active" } else { "todo" };
+                                        view! { <li data-state=state>{t.clone()}</li> }
+                                    }).collect_view()}</ol>
+                                </details>
+                            }
+                        });
+                        let text = m.text.clone();
+                        let actions = (m.from == From::Them && !m.pending).then(|| {
+                            let copied = RwSignal::new(false);
+                            let copy_text = text.clone();
+                            view! {
+                                <div class="d-chat__actions">
+                                    <button type="button" class="d-btn d-btn--ghost d-btn--icon d-btn--sm"
+                                        aria-label=move || if copied.get() { "copied" } else { "copy" }
+                                        data-tooltip=move || if copied.get() { "copied" } else { "copy" }
+                                        on:click=move |_| {
+                                            let t = copy_text.clone();
+                                            leptos::task::spawn_local(async move {
+                                                if crate::components::code_block::write_clipboard(&t).await { copied.set(true) }
+                                            });
+                                        }
+                                    ><Icon name="copy"/></button>
+                                    {on_retry.zip(asked.clone()).map(|(cb, q)| view! {
+                                        <button type="button" class="d-btn d-btn--ghost d-btn--icon d-btn--sm" aria-label="retry" data-tooltip="retry"
+                                            on:click=move |_| cb.run(q.clone())><Icon name="repeat"/></button>
+                                    })}
+                                </div>
+                            }
+                        });
+                        view! {
+                            <div class="d-chat__msg" data-from=from aria-busy=m.pending.then_some("true")>
+                                <span class="d-chat__who">{who}</span>
+                                {steps}
+                                <div class="d-chat__text">
+                                    {if m.pending && m.steps.is_empty() {
+                                        view! { <span class="d-chat__thinking" role="status">"thinking"</span> }.into_any()
+                                    } else {
+                                        text.into_any()
+                                    }}
+                                </div>
+                                {actions}
                             </div>
-                        </div>
-                    }
-                }).collect_view()}
+                        }
+                    }).collect_view()
+                }}
             </div>
             {(!suggestions.is_empty()).then(|| view! {
                 <div class="d-chat__suggest">
@@ -114,14 +188,14 @@ pub fn Chat(
             <form class="d-chat__composer" on:submit={let send = send.clone(); move |e| { e.prevent_default(); send(text.get_untracked()); }}>
                 <label class="d-sr" for=id.clone()>"your question"</label>
                 <textarea
-                    class="d-chat__input" id=id rows="1" node_ref=input
+                    class="d-chat__input" id=id rows="2" node_ref=input
                     placeholder=placeholder
                     prop:value=move || text.get()
                     on:input=move |e| {
                         text.set(event_target_value(&e));
                         if let Some(i) = input.get_untracked() {
                             let _ = i.style(("height", "auto"));
-                            let h = i.scroll_height().min(160);
+                            let h = i.scroll_height().min(200);
                             let _ = i.style(("height", format!("{h}px")));
                         }
                     }
@@ -132,7 +206,12 @@ pub fn Chat(
                         }
                     }
                 ></textarea>
-                <button type="submit" class="d-btn d-btn--primary" disabled=move || busy.get()>"ask"</button>
+                <div class="d-chat__bar">
+                    {tools.as_ref().map(|t| t())}
+                    <button type="submit" class="d-btn d-btn--primary d-chat__send" aria-label="send"
+                        disabled=move || busy.get() || text.with(|t| t.trim().is_empty())
+                    ><Icon name="arrow-up"/></button>
+                </div>
             </form>
         </section>
     }

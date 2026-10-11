@@ -59,7 +59,7 @@
   --shadow-raised: 0 8px 24px rgba(0, 0, 0, 0.5);
   --shadow-overlay: 0 24px 64px rgba(0, 0, 0, 0.65);
   /* glass: a hairline of light along the top edge of a floating layer */
-  --glass-edge: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  --glass-edge: inset 0 1px 0 rgba(255, 255, 255, 0.08);
 }
 
 [data-theme="light"] {
@@ -135,8 +135,9 @@
   --text-max: var(--neutral-11);
   --focus-ring: color-mix(in srgb, var(--accent-primary) 55%, transparent);
   --mark: color-mix(in srgb, var(--accent-primary) 55%, transparent);
-  /* glass: floating layers keep most of their fill and blur what is behind them. text still reads 4.5:1 over
-     the brightest thing that can sit underneath (measured in 10-contrast.md) */
+  /* glass: floating layers are frosted, not see-through. a heavy blur turns whatever is behind into a soft wash
+     with no letterforms left in it, and the fill keeps that wash quiet, so the top layer reads as if it were
+     solid. text still reads 4.5:1 over the brightest thing that can sit underneath (measured in 10-contrast.md) */
   --glass-raised: color-mix(in srgb, var(--bg-raised) 90%, transparent);
   --glass-overlay: color-mix(in srgb, var(--bg-overlay) 94%, transparent);
 }
@@ -224,8 +225,8 @@
   --icon-size: 16px;
   --icon-stroke: 1.5;
   --scrim-blur: 3px;
-  --glass-blur: 18px;
-  --glass-saturate: 1.6;
+  --glass-blur: 40px;
+  --glass-saturate: 1.25;
 
   /* breakpoints (reference only) */
   --bp-sm: 480px;

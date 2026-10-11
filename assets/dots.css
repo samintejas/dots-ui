@@ -1284,3 +1284,166 @@ details:not([open]):has(.d-sidebar__subbtn[aria-current]) > summary.d-sidebar__b
   .d-pebbles i, .d-pebbles i::after, .d-status-page::after { animation: none !important; }
   .d-status-page::after { opacity: 0.4; scale: 0.6; }
 }
+
+/* ---------- v3: breathing room, rounder rows, clearer glass ---------- */
+
+/* buttons: a little more air on each side. an icon on one end takes 4px back from that side, so the
+   ink (icon plus label) is what sits centred, not the box padding */
+.d-btn { gap: 6px; padding: 0 14px; text-align: center; }
+.d-btn--lg { padding: 0 20px; gap: var(--space-8); }
+.d-btn--sm { padding: 0 10px; gap: var(--space-4); }
+.d-btn:not(.d-btn--icon):has(> :is(.d-icon, .d-spinner):first-child) { padding-left: 10px; }
+.d-btn:not(.d-btn--icon):has(> .d-icon:last-child) { padding-right: 10px; }
+.d-btn--lg:not(.d-btn--icon):has(> :is(.d-icon, .d-spinner):first-child) { padding-left: 16px; }
+.d-btn--lg:not(.d-btn--icon):has(> .d-icon:last-child) { padding-right: 16px; }
+.d-btn--sm:not(.d-btn--icon):has(> :is(.d-icon, .d-spinner):first-child) { padding-left: 6px; }
+.d-btn--sm:not(.d-btn--icon):has(> .d-icon:last-child) { padding-right: 6px; }
+.d-btn--icon { padding: 0; }
+/* a row of buttons: one gap, wherever they sit */
+.d-actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-8); }
+
+/* switch: a pill track with a round thumb, 2px clear of the track on every side in both positions */
+.d-switch { width: 32px; height: 18px; border-radius: var(--radius-pill); }
+.d-switch::before { top: 2px; left: 2px; width: 12px; height: 12px; border-radius: var(--radius-pill); }
+.d-switch:checked::before { transform: translateX(14px); }
+.d-choice:has(> .d-switch) { gap: 10px; }
+
+/* workspace dots: every dot owns a fixed slot, so nothing in the row moves when the active one changes.
+   the highlight is one pill that slides along the row and settles over the chosen dot (Dots.dots sets
+   data-glide and --d-at, the index of the active dot) */
+.d-dots { --d-slot: 20px; --d-gap: var(--space-8); position: relative; gap: var(--d-gap); }
+.d-dots .d-dot { width: var(--d-slot); min-width: var(--d-slot); height: 20px; }
+.d-dots[data-glide]::after {
+  content: ""; position: absolute; top: 50%; left: 0; width: 18px; height: 6px; margin-top: -3px; border-radius: 3px;
+  background: var(--accent-primary); pointer-events: none;
+  transform: translateX(calc(var(--d-at, 0) * (var(--d-slot) + var(--d-gap)) + (var(--d-slot) - 18px) / 2));
+  transition: transform var(--dur-slow) var(--ease-out);
+}
+.d-dots[data-glide] .d-dot[data-state="active"] { color: var(--border-strong); }
+.d-dots[data-glide] .d-dot[data-state="active"]::before { width: 8px; height: 8px; border-radius: 4px; opacity: 0; }
+.d-dots[data-glide]:has(.d-dot[data-state="active"]:disabled)::after { background: var(--bg-inset); }
+.d-steps { gap: var(--space-4) var(--space-16); }
+.d-step .d-dot { min-width: 18px; }
+@media (pointer: coarse) { .d-dots { --d-slot: var(--touch-min); --d-gap: 0px; } }
+@media (prefers-reduced-motion: reduce) { .d-dots[data-glide]::after { transition: none; } }
+
+/* rows: hover and current are a rounded block set in from the edges. the current bar is a short pill
+   inside the row instead of the row's left edge */
+.d-menu__item, .d-palette__opt { width: auto; margin: 0 var(--space-4); border-radius: var(--radius-md); }
+.d-menu__item { width: calc(100% - var(--space-8)); }
+.d-sidebar__btn, .d-sidebar__subbtn, .d-secnav__item, .d-tabs[aria-orientation="vertical"] .d-tab, .d-sidebar__tile, .d-apps__tile {
+  position: relative; border-radius: var(--radius-lg);
+}
+.d-sidebar__btn, .d-secnav__item, .d-tabs[aria-orientation="vertical"] .d-tab { border-left: 0; padding-left: var(--space-8); }
+.d-secnav__item, .d-tabs[aria-orientation="vertical"] .d-tab { padding-left: var(--space-12); }
+.d-sidebar__btn::before, .d-secnav__item::before, .d-tabs[aria-orientation="vertical"] .d-tab::before {
+  content: ""; position: absolute; left: 0; top: 50%; width: 3px; height: 0; border-radius: var(--radius-pill);
+  background: var(--accent-primary); transform: translateY(-50%); transition: height var(--dur-base) var(--ease-out);
+}
+.d-sidebar__btn[aria-current]::before,
+details:not([open]):has(.d-sidebar__subbtn[aria-current]) > summary.d-sidebar__btn::before,
+.d-secnav__item:is([aria-current="page"], [aria-current="true"], [aria-selected="true"])::before,
+.d-tabs[aria-orientation="vertical"] .d-tab[aria-selected="true"]::before { height: 14px; }
+.d-sidebar__sub { gap: 1px; padding-left: var(--space-4); }
+.d-sidebar__subbtn { margin-left: 0; padding-left: var(--space-8); border-left: 0; }
+/* a current sub item lights its stretch of the guide line */
+.d-sidebar__subbtn::before { content: ""; position: absolute; left: calc(-1 * var(--space-4) - 1px); top: 4px; bottom: 4px; width: 2px; border-radius: var(--radius-pill); background: transparent; }
+.d-sidebar__subbtn[aria-current]::before { background: var(--accent-primary); }
+.d-sidebar__subbtn[aria-current] { background: var(--bg-hover); }
+.d-shell[data-state="collapsed"]:not([data-mobile]) > .d-sidebar .d-sidebar__btn { border-right: 0; }
+.d-shell[data-state="collapsed"]:not([data-mobile]) > .d-sidebar .d-sidebar__group { padding: 0 var(--space-4); }
+.d-list__row { border-radius: 0; }
+.d-tab { border-radius: var(--radius-md) var(--radius-md) 0 0; }
+.d-seg__opt { border-radius: calc(var(--radius-md) - 1px); }
+.d-seg__opt:first-child { border-bottom-left-radius: calc(var(--radius-md) - 1px); }
+
+/* the switcher: one menu behind the sidebar's head tile holds every switch there is. who you are, which
+   app, which company or household, the theme, and signing out. nothing else in the chrome switches */
+.d-switchboard { width: min(296px, calc(100vw - 16px)); max-width: none; padding: var(--space-4) 0; }
+.d-switchboard .d-menu__head { margin: 0 0 var(--space-4); padding: var(--space-8) var(--space-12) var(--space-12); }
+.d-switchboard .d-menu__head > .d-btn { margin-left: auto; }
+.d-switchboard .d-menu__label { padding: var(--space-4) var(--space-12) 0; }
+.d-switchboard .d-apps__grid { padding: var(--space-4) var(--space-8) var(--space-8); gap: var(--space-4); }
+.d-switchboard .d-apps__tile { padding: var(--space-8) var(--space-4); gap: 6px; }
+.d-switchboard .d-apps__mark { width: 28px; height: 28px; border-radius: var(--radius-md); }
+.d-switchboard .d-apps__mark svg { width: 16px; height: 16px; }
+.d-switchboard .d-menu__sep { margin: var(--space-8) 0; }
+/* the head tile: the current company (or household) on top, the app you are in underneath */
+.d-sidebar__head .d-sidebar__tile { height: 44px; padding: 0 var(--space-8) 0 6px; }
+.d-sidebar__head { padding: var(--space-8) var(--space-8) var(--space-8); }
+.d-sidebar__tile .d-sidebar__who small { display: flex; align-items: center; gap: var(--space-4); }
+.d-sidebar__tile .d-sidebar__who small .d-icon { width: 12px; height: 12px; }
+.d-shell[data-state="collapsed"]:not([data-mobile]) > .d-sidebar .d-sidebar__head { padding: var(--space-8) var(--space-4); }
+
+/* ---------- chat, v3: the assistant screen ----------
+   one big composer is the whole empty state; the conversation reads like a document. the person's turns are
+   small bubbles on the right, the assistant's answers are unboxed text across the column, each with the work
+   it did folded above it and a row of actions under it. */
+.d-chat { gap: var(--space-16); }
+.d-chat__log { gap: var(--space-24); padding: var(--space-8) var(--space-4); }
+.d-chat__empty { gap: var(--space-8); padding: var(--space-32) var(--space-16) var(--space-16); }
+.d-chat__empty p { max-width: 58ch; margin: 0; line-height: var(--leading-body); }
+.d-chat__title { margin: 0; font-size: var(--font-size-2xl); }
+/* the person: a compact bubble on the right */
+.d-chat__msg[data-from="me"] {
+  max-width: min(80%, 56ch); padding: var(--space-8) var(--space-12); gap: 0;
+  background: var(--bg-hover); border: var(--border-w) solid var(--border-default); border-radius: var(--radius-lg) var(--radius-lg) var(--radius-xs) var(--radius-lg);
+}
+.d-chat__msg[data-from="me"] .d-chat__who { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+/* the assistant: no box, the full column */
+.d-chat__msg[data-from="them"] { align-self: stretch; max-width: 72ch; gap: var(--space-8); padding: 0; background: none; border: 0; border-radius: 0; }
+.d-chat__msg[data-from="them"] > .d-chat__who { display: flex; align-items: center; gap: var(--space-8); color: var(--text-strong); font-size: var(--font-size-sm); font-weight: var(--weight-medium); }
+.d-chat__msg[data-from="them"] > .d-chat__who::before {
+  content: ""; flex: none; width: 18px; height: 18px; border-radius: var(--radius-md);
+  background: radial-gradient(circle, var(--accent-primary) 0 3.5px, transparent 4px), var(--bg-inset);
+  box-shadow: inset 0 0 0 var(--border-w) var(--border-strong);
+}
+.d-chat__msg[data-from="them"] > .d-chat__text { line-height: var(--leading-body); color: var(--text-primary); }
+/* the work it did: a folded line above the answer */
+.d-chat__steps { color: var(--text-secondary); font-size: var(--font-size-sm); }
+.d-chat__steps > summary { display: inline-flex; align-items: center; gap: var(--space-4); padding: 2px var(--space-4) 2px 0; border-radius: var(--radius-sm); cursor: pointer; list-style: none; }
+.d-chat__steps > summary::-webkit-details-marker { display: none; }
+.d-chat__steps > summary::after { content: ""; width: 12px; height: 12px; background: currentColor; -webkit-mask: var(--d-i-chevron) center / 12px no-repeat; mask: var(--d-i-chevron) center / 12px no-repeat; transform: rotate(-90deg); transition: transform var(--dur-base) var(--ease-out); }
+.d-chat__steps > summary:hover { color: var(--text-strong); }
+.d-chat__steps[open] > summary::after { transform: rotate(0deg); }
+.d-chat__steps ol { display: grid; gap: var(--space-4); margin: var(--space-8) 0 var(--space-4); padding: 0 0 0 var(--space-12); border-left: var(--border-w) solid var(--border-default); list-style: none; }
+.d-chat__steps li { display: flex; align-items: center; gap: var(--space-8); }
+.d-chat__steps li::before { content: ""; flex: none; width: 6px; height: 6px; border-radius: var(--radius-pill); background: var(--border-strong); }
+.d-chat__steps li[data-state="done"]::before { background: var(--accent-success); }
+.d-chat__steps li[data-state="active"]::before { background: var(--accent-primary); animation: d-pulse var(--dur-pulse) ease-in-out infinite alternate; }
+/* thinking: the word itself shimmers, nothing else moves */
+.d-chat__thinking {
+  background: linear-gradient(90deg, var(--text-secondary) 0 40%, var(--text-max) 50%, var(--text-secondary) 60% 100%) 0 0 / 250% 100%;
+  -webkit-background-clip: text; background-clip: text; color: transparent; animation: d-shimmer 1.6s linear infinite;
+}
+@keyframes d-shimmer { from { background-position: 100% 0; } to { background-position: -150% 0; } }
+@keyframes d-pulse { from { opacity: 0.4; } }
+.d-chat__actions { display: flex; gap: var(--space-2); margin-left: -6px; opacity: 0.7; transition: opacity var(--dur-fast) var(--ease-out); }
+.d-chat__msg:hover .d-chat__actions, .d-chat__actions:focus-within { opacity: 1; }
+/* the composer: a card with the text on top and a tool row underneath */
+.d-chat__composer:has(.d-chat__bar) {
+  flex-direction: column; align-items: stretch; gap: var(--space-4); padding: var(--space-12) var(--space-12) var(--space-8);
+  background: var(--bg-surface); border-color: var(--border-strong); border-radius: var(--radius-lg);
+  box-shadow: 0 1px 0 var(--border-default);
+}
+.d-chat__composer:has(.d-chat__bar) .d-chat__input { min-height: 44px; padding: 0; font-size: var(--font-size-base); }
+.d-chat__bar { display: flex; align-items: center; gap: var(--space-4); }
+.d-chat__bar > :last-child { margin-left: auto; }
+.d-chat__bar .d-btn--ghost { color: var(--text-secondary); }
+.d-chat__bar .d-btn--ghost:hover { color: var(--text-strong); }
+.d-chat__scope { gap: var(--space-4); padding: 0 var(--space-8); border: var(--border-w) solid var(--border-default); border-radius: var(--radius-pill); font-weight: var(--weight-regular); }
+.d-chat__send { width: 28px; height: 28px; padding: 0; border-radius: var(--radius-pill); }
+.d-chat__send:disabled { background: var(--bg-inset); color: var(--text-disabled); border-color: transparent; }
+/* empty state: the composer moves up into the middle and the suggestions sit under it */
+.d-chat:not([data-started]):has(.d-chat__bar) { justify-content: center; }
+.d-chat:not([data-started]):has(.d-chat__bar) .d-chat__log { flex: none; overflow: visible; }
+.d-chat:not([data-started]):has(.d-chat__bar) .d-chat__composer { order: 1; }
+.d-chat:not([data-started]):has(.d-chat__bar) .d-chat__suggest { order: 2; justify-content: center; }
+.d-chat[data-started] .d-chat__suggest:has(+ .d-chat__composer .d-chat__bar) { display: none; }
+.d-chat__suggest .d-btn { gap: 6px; border-radius: var(--radius-pill); padding: 0 12px; color: var(--text-primary); }
+.d-chat__suggest .d-btn .d-icon { color: var(--text-secondary); }
+.d-chat__note { margin: 0; color: var(--text-subtle); font-size: var(--font-size-xs); text-align: center; }
+@media (prefers-reduced-motion: reduce) {
+  .d-chat__thinking { animation: none; color: var(--text-secondary); background: none; }
+  .d-chat__steps li[data-state="active"]::before { animation: none; }
+}

@@ -222,8 +222,10 @@ fn ComponentTour(
         let id = next_id.get_untracked();
         next_id.set(id + 2);
         messages.update(|m| {
-            m.push(ChatMessage { id, from: ChatFrom::Me, text: q, pending: false });
-            m.push(ChatMessage { id: id + 1, from: ChatFrom::Them, text: "home loan: 89 months left.".into(), pending: true });
+            m.push(ChatMessage::me(id, q));
+            let mut reply = ChatMessage::pending(id + 1, vec!["found 2 loan accounts".into(), "projected the last emi".into()]);
+            reply.text = "home loan: 89 months left.".into();
+            m.push(reply);
         });
         set_timeout(
             move || messages.update(|m| if let Some(x) = m.iter_mut().find(|x| x.id == id + 1) { x.pending = false }),

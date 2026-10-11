@@ -45,6 +45,8 @@ impl DotItem {
 
 /// The workspace indicator, also usable as pagination. Shape carries the state: pill, circle, square, diamond.
 ///
+/// Every dot sits in a fixed slot, so the row never shifts; the active pill slides from slot to slot.
+///
 /// Dot buttons are under the 24px target size by design, so where they are the only way to navigate, offer
 /// the same action elsewhere or use [`WorkspaceSteps`].
 #[component]
@@ -61,7 +63,8 @@ pub fn WorkspaceDots(
 ) -> impl IntoView {
     view! {
         <nav aria-label=label>
-            <ol class="d-dots">
+            // fixed slots and one sliding highlight: data-glide plus --d-at, the active index
+            <ol class="d-dots" data-glide="" style=move || format!("--d-at: {}", current.get())>
                 {move || {
                     items.get().into_iter().enumerate().map(|(i, item)| {
                         let active = move || current.get() == i;

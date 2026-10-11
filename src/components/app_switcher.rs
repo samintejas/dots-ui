@@ -1,4 +1,5 @@
-//! The app switcher: the other apps under one account, from the app bar.
+//! The app switcher: the other apps under one account. In a shell with a sidebar it lives inside the
+//! [`Switchboard`], the one menu behind the sidebar's head tile; without a sidebar, [`AppSwitcher`] puts it in the app bar.
 
 use leptos::prelude::*;
 
@@ -65,5 +66,58 @@ pub fn AppTile(
             <span class="d-apps__mark" aria-hidden="true">{mark}</span>
             <span class="d-apps__name">{name}</span>
         </a>
+    }
+}
+
+/// Everything that switches, behind one tile at the top of the sidebar: who you are, which app, which company
+/// (or household), the theme, and signing out. Nothing else in the chrome switches.
+///
+/// The tile shows the current company (`initials`, `title`) and, underneath, the app you are in (`app`,
+/// `app_icon`). Fill the panel with a [`MenuHead`](crate::MenuHead) for the person, [`SwitchboardApps`], a
+/// labelled group of radio rows for companies, and the account rows. Put it in `d-sidebar__head`.
+#[component]
+pub fn Switchboard(
+    /// Square avatar text for the current company or household (`ac`).
+    #[prop(into)]
+    initials: Signal<String>,
+    /// The current company or household.
+    #[prop(into)]
+    title: Signal<String>,
+    /// The app you are in, under the title.
+    #[prop(into)]
+    app: String,
+    #[prop(optional)] app_icon: Option<&'static str>,
+    children: Children,
+) -> impl IntoView {
+    let app2 = app.clone();
+    view! {
+        <Menu
+            label="switch" panel_class="d-switchboard" match_width=true
+            trigger=move || {
+                let app = app2.clone();
+                view! {
+                    <button type="button" class="d-sidebar__tile" aria-label=move || format!("switch app, company or account. now {} in {}", app, title.get())>
+                        <span class="d-avatar d-avatar--square" aria-hidden="true">{move || initials.get()}</span>
+                        <span class="d-sidebar__who">
+                            <b>{move || title.get()}</b>
+                            <small>{app_icon.map(|i| view! { <Icon name=i/> })}{app.clone()}</small>
+                        </span>
+                        <Icon name="chevrons-up-down"/>
+                    </button>
+                }
+            }
+        >
+            {children()}
+        </Menu>
+    }
+}
+
+/// The apps row inside a [`Switchboard`]: a label and a grid of [`AppTile`]s, four across.
+#[component]
+pub fn SwitchboardApps(#[prop(default = "apps".into(), into)] label: String, children: Children) -> impl IntoView {
+    view! {
+        <div class="d-menu__label" role="presentation">{label}</div>
+        <div class="d-apps__grid" role="none" style="grid-template-columns:repeat(4,minmax(0,1fr))">{children()}</div>
+        <div class="d-menu__sep" role="separator"></div>
     }
 }
