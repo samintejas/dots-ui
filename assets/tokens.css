@@ -10,7 +10,7 @@
 :root, [data-theme="dark"] {
   color-scheme: dark;
   /* layer 1: neutral ramp */
-  --neutral-0: #0b0b0b;
+  --neutral-0: #050505;
   --neutral-1: #121212;
   --neutral-2: #1a1a1a;
   --neutral-3: #212121;
@@ -26,23 +26,23 @@
   --accent-danger: #f38ba8;
   --accent-danger-subtle: rgba(243, 139, 168, 0.12);
   --accent-danger-border: rgba(243, 139, 168, 0.4);
-  --on-accent-danger: #0b0b0b;
+  --on-accent-danger: #050505;
   --accent-warning: #fab387;
   --accent-warning-subtle: rgba(250, 179, 135, 0.12);
   --accent-warning-border: rgba(250, 179, 135, 0.4);
-  --on-accent-warning: #0b0b0b;
+  --on-accent-warning: #050505;
   --accent-success: #a6e3a1;
   --accent-success-subtle: rgba(166, 227, 161, 0.12);
   --accent-success-border: rgba(166, 227, 161, 0.4);
-  --on-accent-success: #0b0b0b;
+  --on-accent-success: #050505;
   --accent-info: #89b4fa;
   --accent-info-subtle: rgba(137, 180, 250, 0.12);
   --accent-info-border: rgba(137, 180, 250, 0.4);
-  --on-accent-info: #0b0b0b;
+  --on-accent-info: #050505;
   --accent-primary: #ef9cd8;
   --accent-primary-subtle: rgba(239, 156, 216, 0.12);
   --accent-primary-border: rgba(239, 156, 216, 0.4);
-  --on-accent-primary: #0b0b0b;
+  --on-accent-primary: #050505;
   /* layer 2b: categorical. tags and chart series only, never state */
   --cat-1: #cba6f7;
   --cat-2: #94e2d5;
@@ -54,7 +54,7 @@
   --bg-raised: #171717;
   --bg-overlay: #1c1c1c;
   --text-disabled: #4a4a4a;
-  --scrim: rgba(10, 10, 10, 0.7);
+  --scrim: rgba(0, 0, 0, 0.72);
   /* elevation shadows: floating layers only */
   --shadow-raised: 0 8px 24px rgba(0, 0, 0, 0.5);
   --shadow-overlay: 0 24px 64px rgba(0, 0, 0, 0.65);

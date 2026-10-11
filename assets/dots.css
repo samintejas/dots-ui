@@ -1563,3 +1563,12 @@ details:not([open]):has(.d-sidebar__subbtn[aria-current]) > summary.d-sidebar__b
 .d-switch:checked::before { transform: translate(14px, -50%); }
 /* an input bar never shrinks inside a flex column (its rounded corners clip without making it a scroll box) */
 .d-inputbar { overflow: clip; flex-shrink: 0; }
+
+/* ---------- v5: a black ground, black typing wells ----------
+   the ground is close to black; anywhere you type inside a lifted container
+   (the palette prompt, the chat composer, the input bar) is cut back down to the ground,
+   so the place you type is always the darkest, cleanest part of the component */
+.d-palette__prompt { background: var(--bg-base); }
+.d-chat__composer, .d-chat__composer:has(.d-chat__bar) { background: var(--bg-base); }
+.d-inputbar { background: var(--bg-base); }
+.d-inputbar__seg:hover, .d-inputbar__seg:focus-within { background: var(--bg-surface); }
