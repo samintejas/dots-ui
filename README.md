@@ -67,7 +67,7 @@ The gallery in `gallery/` uses every component: `gallery/build.sh` then
 |---|---|
 | actions | `Button`, `ButtonLink`, `Menu`, `ContextMenu`, `MenuItem`, `MenuLink`, `MenuCheckbox`, `MenuRadioGroup`, `MenuRadio`, `MenuSeparator`, `MenuLabel`, `MenuHead`, `MenuFoot` |
 | forms | `Segmented` + `SegOption`, `SettingRows` + `SettingRow`, `SettingGrid`, `FilterBar` (`FilterSearch`, `Filter`, `FilterActive`), `InputBar` (`InputSeg`, `InputBarSubmit`), `TagInput`, `TextField`, `Select`, `Checkbox`, `RadioGroup` + `Radio`, `Switch`, `Slider`, `Field`, `Label`, `Hint`, `ErrorText` |
-| status | `Stepper`, `Feed` + `FeedItem`, `StatusChip`, `StatusButton`, `Badge`, `Tag`, `Progress`, `ProgressRow`, `Meter`, `MeterRow`, `Ring`, `Spinner`, `Toast` + `ToastProvider` + `use_toasts()` |
+| status | `StatusPage` (loading, not found, error, offline), `Pebbles` (loader), `Stepper`, `Feed` + `FeedItem`, `StatusChip`, `StatusButton`, `Badge`, `Tag`, `Progress`, `ProgressRow`, `Meter`, `MeterRow`, `Ring`, `Spinner`, `Toast` + `ToastProvider` + `use_toasts()` |
 | content | `Card` (`CardHead`, `CardBody`, `CardFoot`, `CardButton`, `CardLink`), `List`, `ListItem`, `Listbox`, `ListOption`, `Table` (`Th`, `Tr`, `Td`, `EditCell`), `Accordion`, `CodeBlock`, `HeroMetric`, `HeroClock`, `EmptyState`, `EmptyLoading`, `EmptyError`, `Avatar` (`AvatarImage`, `AvatarGroup`, `Identity`), `Kbd`/`Keys`, `Divider`, `Surface` (elevation) |
 | navigation | `AppSwitcher` + `AppTile`, `SectionNav` (`SectionNavItem`, `SectionNavLabel`, `SectionNavLayout`), `Tabs` (`TabList` across or `vertical`, `Tab`, `TabPanel`), `Breadcrumbs`, `Pager`, `Chat`, `WorkspaceDots`, `WorkspaceSteps`, `CommandPalette` |
 | layout | `Shell`, `ShellMain`, `Main`, `SkipLink`, `ShellToggle`, `AppBar` (+ parts), `Sidebar` (+ switcher, filter, groups, items, parents, actions, account), `RightBar`, `BottomBar`, `SplitPane` + `Pane` |
@@ -90,6 +90,10 @@ The gallery in `gallery/` uses every component: `gallery/build.sh` then
 - **SectionNav** is for sections that are routes (`/settings/profile`); a vertical `TabList` is for panels that
   switch in place. Both sit in a `SectionNavLayout`, which stacks the nav on top under 768px.
 - **AppSwitcher** is a `Menu` with a grid panel (`panel_class="d-apps"`); any `Menu` takes `panel_class`.
+- **Glass**: menus, toasts, tooltips, dialogs and the palette blur what is behind them and keep 90% (94% for
+  dialogs) of their fill, so text still reads 4.5:1 over anything. Browsers without `backdrop-filter`, and people who
+  ask for reduced transparency, get the solid fill.
+- **Corners**: 2px small held things, 3px controls, 4px cards, 6px floating layers; layout tiles stay square.
 - **Dialog**: `dismiss=false` ignores the scrim and focuses the first footer button (cancel).
 - **Theme**: `use_theme()` is an `RwSignal<Theme>` mirrored to `data-theme` on `<html>`.
 

@@ -430,6 +430,14 @@ fn ComponentTour(
                 </AppSwitcher>
             </AppBar>
         </Section>
+        <Section title="pebbles, status page">
+            <Pebbles label="loading transactions"/>
+            <div style="height:420px;overflow:hidden;position:relative">
+                <StatusPage kind=StatusKind::NotFound title="nothing at this address" actions=|| view! { <ButtonLink href="#" variant=ButtonVariant::Primary>"go to transactions"</ButtonLink> }>
+                    "this is not a page in fin."
+                </StatusPage>
+            </div>
+        </Section>
         <Section title="chat">
             <div style="height:360px">
                 <Chat name="tracer" label="ask tracer" title="ask tracer" intro="answers come from your own transactions and accounts."
