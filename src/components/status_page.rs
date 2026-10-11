@@ -80,7 +80,7 @@ pub fn StatusPage(
 #[component]
 pub fn Street() -> impl IntoView {
     // (x across, z toward or away, delay, how far they wander, torch faces left)
-    const PEOPLE: [(i32, i32, i32, i32, bool); 4] = [(-280, 200, -2, 70, false), (300, 120, -7, -90, true), (-290, -380, -4, 110, false), (270, -640, -11, -100, true)];
+    const PEOPLE: [(i32, i32, i32, i32, bool); 4] = [(-280, 200, -2, 70, false), (300, 120, -7, -90, true), (-330, -240, -4, 90, false), (320, -420, -11, -80, true)];
     view! {
         <div class="d-street" aria-hidden="true">
             <div class="d-street__world">

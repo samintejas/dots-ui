@@ -1081,12 +1081,7 @@ details:not([open]):has(.d-sidebar__subbtn[aria-current]) > summary.d-sidebar__b
 .d-chat__composer .d-btn { border-radius: var(--radius-sm); }
 /* showcase: the one decorated surface. the entry point of an assistant, before a conversation starts. */
 .d-chat--hero { position: relative; isolation: isolate; }
-.d-chat--hero:not([data-started])::before {
-  content: ""; position: absolute; z-index: -1; inset: 0 -10%; pointer-events: none; filter: blur(24px);
-  background: radial-gradient(38% 60% at 25% 30%, var(--accent-primary-subtle), transparent 70%), radial-gradient(34% 56% at 78% 25%, var(--accent-info-subtle), transparent 70%), radial-gradient(30% 50% at 55% 85%, var(--accent-success-subtle), transparent 70%);
-}
-.d-chat__mark { width: 48px; height: 48px; border-radius: var(--radius-pill); background: conic-gradient(from 0deg, var(--accent-primary), var(--accent-info), var(--accent-success), var(--accent-warning), var(--accent-primary)); filter: blur(4px); animation: d-turn 9s linear infinite; }
-.d-chat--hero .d-chat__title { background: linear-gradient(90deg, var(--text-max), var(--accent-primary) 60%, var(--accent-info)); -webkit-background-clip: text; background-clip: text; color: transparent; font-size: var(--font-size-2xl); }
+.d-chat__mark { width: 16px; height: 16px; border-radius: var(--radius-pill); background: var(--accent-primary); }
 .d-chat--hero[data-started] .d-chat__mark { display: none; }
 @keyframes d-turn { to { transform: rotate(360deg); } }
 
@@ -1258,15 +1253,15 @@ details:not([open]):has(.d-sidebar__subbtn[aria-current]) > summary.d-sidebar__b
   position: relative; isolation: isolate; display: grid; place-items: center; min-height: 100dvh; padding: var(--space-48) var(--space-16);
   overflow: hidden; background: var(--bg-base); color: var(--text-primary); font-family: var(--font-mono); text-align: center;
 }
-.d-status-page::before, .d-status-page::after {
+.d-status-page::after {
   content: ""; position: absolute; z-index: -1; top: 50%; left: 50%; width: 720px; height: 720px; border-radius: var(--radius-pill);
   translate: -50% -55%; pointer-events: none;
 }
-.d-status-page::before { background: radial-gradient(circle, var(--accent-primary-subtle) 0%, transparent 62%); }
+
 .d-status-page::after { border: 1px solid var(--accent-primary-border); opacity: 0; animation: d-tide var(--dur-ripple) var(--ease-out) infinite; }
-.d-status-page[data-kind="error"]::before { background: radial-gradient(circle, var(--accent-danger-subtle) 0%, transparent 62%); }
+
 .d-status-page[data-kind="error"]::after { border-color: var(--accent-danger-border); }
-.d-status-page[data-kind="offline"]::before { background: radial-gradient(circle, var(--accent-warning-subtle) 0%, transparent 62%); }
+
 .d-status-page[data-kind="offline"]::after { border-color: var(--accent-warning-border); }
 .d-status-page[data-kind="not-found"]::after { animation-duration: calc(var(--dur-ripple) * 1.6); }
 @keyframes d-tide { 0% { opacity: 0; scale: 0.15; } 20% { opacity: 0.7; } 100% { opacity: 0; scale: 1; } }
@@ -1393,11 +1388,7 @@ details:not([open]):has(.d-sidebar__subbtn[aria-current]) > summary.d-sidebar__b
 /* the assistant: no box, the full column */
 .d-chat__msg[data-from="them"] { align-self: stretch; max-width: 72ch; gap: var(--space-8); padding: 0; background: none; border: 0; border-radius: 0; }
 .d-chat__msg[data-from="them"] > .d-chat__who { display: flex; align-items: center; gap: var(--space-8); color: var(--text-strong); font-size: var(--font-size-sm); font-weight: var(--weight-medium); }
-.d-chat__msg[data-from="them"] > .d-chat__who::before {
-  content: ""; flex: none; width: 18px; height: 18px; border-radius: var(--radius-md);
-  background: radial-gradient(circle, var(--accent-primary) 0 3.5px, transparent 4px), var(--bg-inset);
-  box-shadow: inset 0 0 0 var(--border-w) var(--border-strong);
-}
+.d-chat__msg[data-from="them"] > .d-chat__who::before { content: ""; flex: none; width: 10px; height: 10px; border-radius: var(--radius-pill); background: var(--accent-primary); }
 .d-chat__msg[data-from="them"] > .d-chat__text { line-height: var(--leading-body); color: var(--text-primary); }
 /* the work it did: a folded line above the answer */
 .d-chat__steps { color: var(--text-secondary); font-size: var(--font-size-sm); }
@@ -1412,10 +1403,7 @@ details:not([open]):has(.d-sidebar__subbtn[aria-current]) > summary.d-sidebar__b
 .d-chat__steps li[data-state="done"]::before { background: var(--accent-success); }
 .d-chat__steps li[data-state="active"]::before { background: var(--accent-primary); animation: d-pulse var(--dur-pulse) ease-in-out infinite alternate; }
 /* thinking: the word itself shimmers, nothing else moves */
-.d-chat__thinking {
-  background: linear-gradient(90deg, var(--text-secondary) 0 40%, var(--text-max) 50%, var(--text-secondary) 60% 100%) 0 0 / 250% 100%;
-  -webkit-background-clip: text; background-clip: text; color: transparent; animation: d-shimmer 1.6s linear infinite;
-}
+.d-chat__thinking { color: var(--text-secondary); animation: d-pulse var(--dur-pulse) ease-in-out infinite alternate; }
 @keyframes d-shimmer { from { background-position: 100% 0; } to { background-position: -150% 0; } }
 @keyframes d-pulse { from { opacity: 0.4; } }
 .d-chat__actions { display: flex; gap: var(--space-2); margin-left: -6px; opacity: 0.7; transition: opacity var(--dur-fast) var(--ease-out); }
@@ -1478,7 +1466,6 @@ details:not([open]):has(.d-sidebar__subbtn[aria-current]) > summary.d-sidebar__b
     linear-gradient(0deg, transparent 0 60px, var(--st-line) 60px 120px) 50% 0 / 2px 120px repeat-y,
     repeating-linear-gradient(90deg, var(--st-line-2) 0 1px, transparent 1px 50px),
     repeating-linear-gradient(0deg, var(--st-line-2) 0 1px, transparent 1px 60px);
-  -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 12%, #000 30%, transparent 95%); mask-image: linear-gradient(to bottom, transparent 0, #000 12%, #000 30%, transparent 95%);
   animation: d-street-go var(--st-speed) linear infinite;
 }
 @keyframes d-street-go { to { background-position: 0 0, 50% -120px, 0 -120px, 0 -120px; } }
@@ -1490,7 +1477,6 @@ details:not([open]):has(.d-sidebar__subbtn[aria-current]) > summary.d-sidebar__b
     repeating-linear-gradient(0deg, transparent 0 34px, var(--st-line-2) 34px 35px, transparent 35px 56px, var(--st-line-2) 56px 57px, transparent 57px 76px),
     repeating-linear-gradient(90deg, transparent 0 30px, var(--st-line-2) 30px 31px, transparent 31px 52px, var(--st-line-2) 52px 53px, transparent 53px 65px);
   border-top: 1px solid var(--st-line);
-  -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 10%, #000 30%, transparent 95%); mask-image: linear-gradient(90deg, transparent 0, #000 10%, #000 30%, transparent 95%);
   animation: d-wall-go var(--st-speed) linear infinite;
 }
 @keyframes d-wall-go { to { background-position: 0 0, -260px 0, -65px 0, -65px 0; } }
@@ -1522,9 +1508,8 @@ details:not([open]):has(.d-sidebar__subbtn[aria-current]) > summary.d-sidebar__b
 .d-status-page[data-kind="not-found"] .d-street__walker { animation: d-wander var(--w-dur, 14s) ease-in-out infinite; animation-delay: var(--w-delay, 0s); }
 .d-status-page[data-kind="not-found"] .d-street__walker > u {
   position: absolute; top: 20px; left: 10px; width: 160px; height: 70px; margin-top: -35px; transform-origin: 0 50%;
-  background: color-mix(in srgb, var(--st-accent) 34%, transparent);
+  background: color-mix(in srgb, var(--st-accent) 18%, transparent);
   clip-path: polygon(0 50%, 100% 0, 100% 100%);
-  -webkit-mask-image: linear-gradient(90deg, #000, transparent); mask-image: linear-gradient(90deg, #000, transparent);
   animation: d-search 3.2s ease-in-out infinite alternate; animation-delay: var(--w-delay, 0s);
 }
 .d-status-page[data-kind="not-found"] .d-street__walker > u::before { /* the arm */
@@ -1543,11 +1528,8 @@ details:not([open]):has(.d-sidebar__subbtn[aria-current]) > summary.d-sidebar__b
 .d-status-page[data-kind="error"] .d-street__walker, .d-status-page[data-kind="error"] .d-street__walker * { animation: none; }
 .d-status-page[data-kind="error"] .d-street__walker > b::before { border-color: var(--st-accent); }
 .d-status-page[data-kind="offline"] .d-street__walker { display: none; }
-/* the content sits on a quiet patch of ground so it always reads over the lines */
+/* the lines are faint enough (16% and 7% ink) that the text reads straight over them */
 .d-status-page:has(> .d-street) .d-status-page__inner { position: relative; padding: var(--space-24); }
-.d-status-page:has(> .d-street) .d-status-page__inner::before {
-  content: ""; position: absolute; z-index: -1; inset: -16px -48px; background: radial-gradient(closest-side, var(--bg-base) 60%, transparent);
-}
 @media (prefers-reduced-motion: reduce) {
   .d-street *, .d-street *::before, .d-street *::after { animation: none !important; }
 }
@@ -1569,11 +1551,11 @@ details:not([open]):has(.d-sidebar__subbtn[aria-current]) > summary.d-sidebar__b
 .d-copyval[data-copied] { border-color: var(--accent-success-border); }
 .d-copyval[data-copied] .d-icon { color: var(--accent-success); }
 
-/* ---------- v4: opaque floating layers, a softer ramp ----------
-   menus, toasts, tooltips, dialogs and the palette are solid. what makes them read as glass is the finish:
-   a faint sheen falling from the top edge and the hairline of light along it. nothing behind them shows. */
+/* ---------- v4: opaque floating layers ----------
+   menus, toasts, tooltips, dialogs and the palette are solid: a lighter fill, a stronger border, a hairline of
+   light on the top edge and a shadow. nothing behind them shows, and there are no gradients anywhere. */
 .d-elev-2, .d-menu, .d-toast, .d-tooltip, .d-elev-3, .d-dialog, .d-sheet, .d-palette {
-  background-image: linear-gradient(180deg, color-mix(in srgb, var(--text-max) 4%, transparent), transparent 56px);
+  background-image: none;
   -webkit-backdrop-filter: none; backdrop-filter: none;
 }
 /* the switch thumb is centred on the track's middle line, so it sits evenly at any zoom */
