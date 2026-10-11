@@ -212,7 +212,7 @@ pub fn Menu(
     /// Make the menu at least as wide as its trigger.
     #[prop(optional)]
     match_width: bool,
-    /// Stay open while checkbox rows are toggled; give it a [`MenuFoot`] with `clear` and `done`.
+    /// Stay open while checkbox rows are toggled; give it a [`MenuFoot`] with `clear` and `done`, which stays pinned to the bottom while the rows scroll.
     #[prop(optional)]
     multi: bool,
     children: Children,
