@@ -87,6 +87,9 @@ pub fn Switchboard(
     #[prop(into)]
     app: String,
     #[prop(optional)] app_icon: Option<&'static str>,
+    /// Drawn instead of the initials, for a product with a mark of its own.
+    #[prop(optional, into)]
+    mark: Option<ViewFn>,
     children: Children,
 ) -> impl IntoView {
     let app2 = app.clone();
@@ -97,7 +100,10 @@ pub fn Switchboard(
                 let app = app2.clone();
                 view! {
                     <button type="button" class="d-sidebar__tile" aria-label=move || format!("switch app, company or account. now {} in {}", app, title.get())>
-                        <span class="d-avatar d-avatar--square" aria-hidden="true">{move || initials.get()}</span>
+                        {match mark.clone() {
+                            Some(m) => view! { <span class="d-sidebar__mark" aria-hidden="true">{m.run()}</span> }.into_any(),
+                            None => view! { <span class="d-avatar d-avatar--square" aria-hidden="true">{move || initials.get()}</span> }.into_any(),
+                        }}
                         <span class="d-sidebar__who">
                             <b>{move || title.get()}</b>
                             <small>{app_icon.map(|i| view! { <Icon name=i/> })}{app.clone()}</small>
