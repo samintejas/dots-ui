@@ -453,8 +453,8 @@ fn ComponentTour(
         <Section title="pebbles, status page">
             <Pebbles label="loading transactions"/>
             <div style="height:420px;overflow:hidden;position:relative">
-                <StatusPage kind=StatusKind::NotFound title="nothing at this address" actions=|| view! { <ButtonLink href="#" variant=ButtonVariant::Primary>"go to transactions"</ButtonLink> }>
-                    "this is not a page in fin."
+                <StatusPage kind=StatusKind::NotFound title="you are lost">
+                    <a class="d-link" href="#">"click here to go home"</a>
                 </StatusPage>
             </div>
         </Section>

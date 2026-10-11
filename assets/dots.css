@@ -112,7 +112,7 @@ a:hover { text-decoration-thickness: 2px; }
 }
 
 /* severity: one attribute sets the four colours a component may read */
-:where([data-severity]) { --_c: var(--text-strong); --_s: var(--bg-hover); --_b: var(--border-strong); --_on: var(--bg-base); }
+:where([data-severity]) { --_c: var(--text-strong); --_s: var(--bg-hover); --_b: var(--border-soft); --_on: var(--bg-base); }
 [data-severity="danger"] { --_c: var(--accent-danger); --_s: var(--accent-danger-subtle); --_b: var(--accent-danger-border); --_on: var(--on-accent-danger); }
 [data-severity="warning"] { --_c: var(--accent-warning); --_s: var(--accent-warning-subtle); --_b: var(--accent-warning-border); --_on: var(--on-accent-warning); }
 [data-severity="success"] { --_c: var(--accent-success); --_s: var(--accent-success-subtle); --_b: var(--accent-success-border); --_on: var(--on-accent-success); }
@@ -172,7 +172,7 @@ a:hover { text-decoration-thickness: 2px; }
 /* search trigger: looks like a well, behaves like a button, opens the command palette */
 .d-appbar__search {
   display: inline-flex; align-items: center; gap: var(--space-8); flex: none; height: 24px; min-width: 200px; padding: 0 var(--space-4) 0 var(--space-8);
-  background: var(--bg-well); border: var(--border-w) solid var(--border-control); border-radius: var(--radius-sm);
+  background: var(--bg-well); border: var(--border-w) solid var(--border-field); border-radius: var(--radius-sm);
   color: var(--text-secondary); font-size: var(--font-size-sm); text-align: left; cursor: pointer;
   transition: border-color var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out);
 }
@@ -284,7 +284,7 @@ button.d-status:disabled::before { color: var(--text-disabled); }
 .d-btn--primary:hover { background: color-mix(in srgb, var(--accent-primary) 84%, var(--text-max)); }
 .d-btn--primary:active { background: color-mix(in srgb, var(--accent-primary) 80%, var(--bg-base)); }
 
-.d-btn--secondary { border-color: var(--border-strong); }
+.d-btn--secondary { background: var(--bg-control); border-color: var(--border-soft); }
 .d-btn--secondary:hover { background: var(--bg-hover); border-color: var(--border-focus-ring-quiet); }
 .d-btn--secondary:active { background: var(--bg-press); }
 
@@ -525,8 +525,8 @@ textarea.d-input { height: auto; min-height: 76px; padding: var(--space-4) var(-
 .d-menu__item[role="menuitemradio"][aria-checked="true"] .d-menu__mark { border-color: var(--accent-primary); }
 .d-menu__item:is([role="menuitemcheckbox"][aria-checked="true"], [role="menuitemradio"][aria-checked="true"], [role="option"][aria-selected="true"]) .d-menu__mark::before { transform: scale(1); }
 .d-menu__item[aria-disabled="true"] .d-menu__mark { background: transparent; border-color: var(--border-default); }
-.d-menu__foot { display: flex; align-items: center; justify-content: space-between; gap: var(--space-8); margin-top: var(--space-4); padding: var(--space-4) var(--space-8) 0; border-top: var(--border-w) solid var(--border-raised); }
-.d-menu__head { display: flex; align-items: center; gap: var(--space-8); margin-bottom: var(--space-4); padding: var(--space-4) var(--space-12) var(--space-8); border-bottom: var(--border-w) solid var(--border-raised); }
+.d-menu__foot { display: flex; align-items: center; justify-content: space-between; gap: var(--space-8); margin-top: var(--space-4); padding: var(--space-4) var(--space-8) 0; border-top: var(--border-w) solid var(--border-float-divider); }
+.d-menu__head { display: flex; align-items: center; gap: var(--space-8); margin-bottom: var(--space-4); padding: var(--space-4) var(--space-12) var(--space-8); border-bottom: var(--border-w) solid var(--border-float-divider); }
 .d-menu__who, .d-sidebar__who { display: grid; flex: 1; min-width: 0; line-height: 1.3; }
 .d-menu__who b, .d-sidebar__who b { overflow: hidden; color: var(--text-strong); font-weight: var(--weight-medium); text-overflow: ellipsis; white-space: nowrap; }
 .d-menu__who small, .d-sidebar__who small { overflow: hidden; color: var(--text-secondary); font-size: var(--font-size-xs); text-overflow: ellipsis; white-space: nowrap; }
@@ -633,7 +633,7 @@ th[aria-sort="descending"] .d-table__sort::after { content: "\2193"; color: var(
 /* ---------- badge / tag ---------- */
 .d-badge {
   display: inline-flex; align-items: center; gap: var(--space-4); flex: none; height: 18px; padding: 0 var(--space-4);
-  background: transparent; border: var(--border-w) solid var(--border-strong); border-radius: var(--radius-xs);
+  background: transparent; border: var(--border-w) solid var(--border-soft); border-radius: var(--radius-xs);
   color: var(--text-secondary); font-size: var(--font-size-xs); font-weight: var(--weight-medium); line-height: 1; white-space: nowrap;
 }
 .d-badge[data-severity] { background: var(--_s); border-color: var(--_b); color: var(--_c); }
@@ -669,7 +669,7 @@ th[aria-sort="descending"] .d-table__sort::after { content: "\2193"; color: var(
 .d-spinner i:nth-child(3) { animation-delay: 320ms; }
 
 /* ---------- empty state ---------- */
-.d-empty { display: grid; justify-items: start; gap: var(--space-8); padding: var(--space-24); border: var(--border-w) dashed var(--border-strong); color: var(--text-secondary); font-size: var(--font-size-sm); }
+.d-empty { display: grid; justify-items: start; gap: var(--space-8); padding: var(--space-24); border: var(--border-w) dashed var(--border-soft); color: var(--text-secondary); font-size: var(--font-size-sm); }
 .d-empty__title { color: var(--text-strong); font-size: var(--font-size-base); font-weight: var(--weight-medium); }
 .d-empty[data-severity] .d-empty__title { color: var(--_c); }
 
@@ -692,7 +692,7 @@ th[aria-sort="descending"] .d-table__sort::after { content: "\2193"; color: var(
    the picture sits over the initials, so the initials show while it loads and if it fails. */
 .d-avatar {
   position: relative; display: inline-grid; place-items: center; flex: none; width: 24px; height: 24px; padding: 0;
-  background: var(--bg-fill); border: var(--border-w) solid var(--border-strong); border-radius: var(--radius-pill);
+  background: var(--bg-fill); border: var(--border-w) solid var(--border-soft); border-radius: var(--radius-pill);
   color: var(--text-strong); font-size: var(--font-size-xs); font-weight: var(--weight-medium); line-height: 1; text-decoration: none; user-select: none;
 }
 .d-avatar--square { border-radius: var(--radius-sm); }
@@ -734,7 +734,7 @@ a.d-avatar:active, button.d-avatar:active { background: var(--bg-hover); border-
 /* ---------- kbd ---------- */
 .d-kbd {
   display: inline-grid; place-items: center; flex: none; min-width: 18px; height: 18px; padding: 0 var(--space-4);
-  background: var(--bg-fill); border: var(--border-w) solid var(--border-strong); border-radius: var(--radius-xs);
+  background: var(--bg-fill); border: var(--border-w) solid var(--border-soft); border-radius: var(--radius-xs);
   color: var(--text-primary); font-family: inherit; font-size: var(--font-size-xs); line-height: 1; white-space: nowrap;
 }
 
@@ -896,26 +896,15 @@ details:not([open]):has(.d-sidebar__subbtn[aria-current]) > summary.d-sidebar__b
 .d-elev-inset { background: var(--bg-well); border: var(--border-w) solid var(--border-control); }
 .d-elev-2, .d-menu, .d-toast, .d-tooltip {
   --bg-hover: color-mix(in srgb, var(--text-max) 7%, transparent);
-  background: var(--glass-raised); border-color: var(--border-raised); box-shadow: var(--shadow-raised), var(--glass-edge);
-  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate)); backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+  background: var(--bg-raised); border-color: var(--border-raised); box-shadow: var(--shadow-raised);
 }
 .d-elev-3, .d-dialog, .d-sheet, .d-palette {
   --bg-hover: color-mix(in srgb, var(--text-max) 7%, transparent);
-  background: var(--glass-overlay); border-color: var(--border-overlay); box-shadow: var(--shadow-overlay), var(--glass-edge);
-  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate)); backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+  background: var(--bg-overlay); border-color: var(--border-overlay); box-shadow: var(--shadow-overlay);
 }
-/* glass needs a browser that blurs, and a person who wants it: otherwise the solid fill */
-@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
-  .d-elev-2, .d-menu, .d-toast, .d-tooltip { background: var(--bg-raised); }
-  .d-elev-3, .d-dialog, .d-sheet, .d-palette { background: var(--bg-overlay); }
-}
-@media (prefers-reduced-transparency: reduce) {
-  .d-elev-2, .d-menu, .d-toast, .d-tooltip { background: var(--bg-raised); -webkit-backdrop-filter: none; backdrop-filter: none; }
-  .d-elev-3, .d-dialog, .d-sheet, .d-palette { background: var(--bg-overlay); -webkit-backdrop-filter: none; backdrop-filter: none; }
-}
-/* dividers inside a lifted layer step up with it */
-.d-dialog__head, .d-dialog__foot, .d-palette__prompt, .d-palette__foot { border-color: var(--border-raised); }
-.d-menu__sep { background: var(--border-raised); }
+/* dividers inside a lifted layer: their own token, a whisper in dark */
+.d-dialog__head, .d-dialog__foot, .d-palette__prompt, .d-palette__foot { border-color: var(--border-float-divider); }
+.d-menu__sep { background: var(--border-float-divider); }
 .d-palette__group { background: transparent; }
 
 /* ---------- motion ---------- */
@@ -976,7 +965,7 @@ details:not([open]):has(.d-sidebar__subbtn[aria-current]) > summary.d-sidebar__b
 /* ---------- input bar: several fields that read as one control ---------- */
 .d-inputbar {
   display: flex; flex-wrap: wrap; align-items: stretch;
-  background: var(--bg-surface); border: var(--border-w) solid var(--border-strong); border-radius: var(--radius-sm);
+  background: var(--bg-surface); border: var(--border-w) solid var(--border-soft); border-radius: var(--radius-sm);
   transition: border-color var(--dur-fast) var(--ease-out);
 }
 .d-inputbar:focus-within { border-color: var(--accent-primary); }
@@ -1006,7 +995,7 @@ details:not([open]):has(.d-sidebar__subbtn[aria-current]) > summary.d-sidebar__b
 .d-taginput {
   position: relative; display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-4);
   min-height: var(--control-h); padding: var(--space-4) var(--space-8);
-  background: var(--bg-well); border: var(--border-w) solid var(--border-control); border-radius: var(--radius-sm); cursor: text;
+  background: var(--bg-well); border: var(--border-w) solid var(--border-field); border-radius: var(--radius-sm); cursor: text;
   transition: border-color var(--dur-fast) var(--ease-out);
 }
 .d-taginput:hover { border-color: var(--text-secondary); }
@@ -1032,7 +1021,7 @@ details:not([open]):has(.d-sidebar__subbtn[aria-current]) > summary.d-sidebar__b
 /* ---------- editable table cells ---------- */
 .d-table td[data-edit] { cursor: text; outline-offset: -2px; }
 .d-table td[data-edit]:hover { box-shadow: inset 0 0 0 var(--border-w) var(--border-strong); }
-.d-table__input { display: block; width: 100%; min-width: 48px; height: 22px; padding: 0 var(--space-4); background: var(--bg-well); border: var(--border-w) solid var(--border-control); border-radius: var(--radius-xs); color: var(--text-strong); font-size: inherit; outline-offset: 0; }
+.d-table__input { display: block; width: 100%; min-width: 48px; height: 22px; padding: 0 var(--space-4); background: var(--bg-well); border: var(--border-w) solid var(--border-field); border-radius: var(--radius-xs); color: var(--text-strong); font-size: inherit; outline-offset: 0; }
 .d-table .d-num .d-table__input { text-align: right; }
 
 /* ---------- meter and ring: a share of a whole, not a task ---------- */
@@ -1070,7 +1059,7 @@ details:not([open]):has(.d-sidebar__subbtn[aria-current]) > summary.d-sidebar__b
 .d-chat__suggest .d-btn { border-radius: var(--radius-md); font-weight: var(--weight-regular); }
 .d-chat__composer {
   display: flex; align-items: flex-end; gap: var(--space-8); padding: var(--space-4) var(--space-4) var(--space-4) var(--space-12);
-  background: var(--bg-surface); border: var(--border-w) solid var(--border-strong); border-radius: var(--radius-md);
+  background: var(--bg-surface); border: var(--border-w) solid var(--border-soft); border-radius: var(--radius-md);
   transition: border-color var(--dur-fast) var(--ease-out);
 }
 /* composite focus: the composer's border is the focus mark */
@@ -1116,7 +1105,7 @@ details:not([open]):has(.d-sidebar__subbtn[aria-current]) > summary.d-sidebar__b
 /* ---------- stepper: where you are in a short, ordered flow ---------- */
 .d-stepper { display: flex; flex-wrap: wrap; gap: var(--space-8) var(--space-24); margin: 0; padding: 0 0 var(--space-12); list-style: none; border-bottom: var(--border-w) solid var(--border-default); }
 .d-stepper__step { display: flex; align-items: center; gap: var(--space-8); color: var(--text-secondary); }
-.d-stepper__n { display: grid; place-items: center; flex: none; width: 20px; height: 20px; border: var(--border-w) solid var(--border-strong); border-radius: var(--radius-pill); font-size: var(--font-size-xs); font-weight: var(--weight-medium); }
+.d-stepper__n { display: grid; place-items: center; flex: none; width: 20px; height: 20px; border: var(--border-w) solid var(--border-soft); border-radius: var(--radius-pill); font-size: var(--font-size-xs); font-weight: var(--weight-medium); }
 .d-stepper__n .d-icon { width: 12px; height: 12px; vertical-align: 0; }
 .d-stepper__step[aria-current="step"] { color: var(--text-max); }
 .d-stepper__step[aria-current="step"] .d-stepper__n { border-color: var(--accent-primary); color: var(--text-max); }
@@ -1411,8 +1400,8 @@ details:not([open]):has(.d-sidebar__subbtn[aria-current]) > summary.d-sidebar__b
 /* the composer: a card with the text on top and a tool row underneath */
 .d-chat__composer:has(.d-chat__bar) {
   flex-direction: column; align-items: stretch; gap: var(--space-4); padding: var(--space-12) var(--space-12) var(--space-8);
-  background: var(--bg-surface); border-color: var(--border-strong); border-radius: var(--radius-lg);
-  box-shadow: 0 1px 0 var(--border-default);
+  background: var(--bg-surface); border-color: var(--border-soft); border-radius: var(--radius-lg);
+  box-shadow: none;
 }
 .d-chat__composer:has(.d-chat__bar) .d-chat__input { min-height: 44px; padding: 0; font-size: var(--font-size-base); }
 .d-chat__bar { display: flex; align-items: center; gap: var(--space-4); }
@@ -1436,102 +1425,52 @@ details:not([open]):has(.d-sidebar__subbtn[aria-current]) > summary.d-sidebar__b
   .d-chat__steps li[data-state="active"]::before { animation: none; }
 }
 
-/* ---------- the street: a wireframe world behind status pages ----------
-   a street drawn in hairlines, running from your feet to the horizon, with buildings on both sides and a
-   few people on it. loading: they walk away down the street and it keeps coming (you are on your way).
-   not found: they wander with torches, looking for the page. error: they stand still. offline: the lights
-   are out and the street is empty. pure css in 3d; the markup is static, so a framework can render it.
-   reduced motion: everything stands still, the scene stays. */
+/* ---------- still water: the quiet ground behind status pages ----------
+   one hairline horizon and three thin rings that open slowly from a single point on it, like a pebble
+   dropped into dark water. nothing else moves. loading: the rings come faster (it is on its way). not found:
+   slower, one point of accent where it is looking. error: the rings stop where they are. offline: the water
+   is flat, no rings. the markup is the three <i> inside .d-street__world; older markup (a street with
+   walkers) still works, its walkers are simply not drawn. reduced motion: the rings rest at three sizes. */
 .d-status-page:has(> .d-street)::before, .d-status-page:has(> .d-street)::after { content: none; }
 .d-street {
-  --st-line: color-mix(in srgb, var(--text-max) 16%, transparent);
-  --st-line-2: color-mix(in srgb, var(--text-max) 7%, transparent);
+  --st-ink: color-mix(in srgb, var(--text-max) 17%, transparent);
+  --st-ink-2: color-mix(in srgb, var(--text-max) 7%, transparent);
   --st-accent: var(--accent-primary);
-  --st-speed: 0s;
+  --st-period: 18s;
+  --st-y: 80%;
   position: absolute; inset: 0; z-index: -1; overflow: hidden; pointer-events: none;
-  perspective: 520px; perspective-origin: 50% 34%;
 }
 .d-status-page[data-kind="error"] .d-street { --st-accent: var(--accent-danger); }
-.d-status-page[data-kind="offline"] .d-street { --st-accent: var(--accent-warning); --st-line: color-mix(in srgb, var(--text-max) 8%, transparent); --st-line-2: color-mix(in srgb, var(--text-max) 4%, transparent); }
-.d-status-page[data-kind="loading"] .d-street { --st-speed: 2.4s; }
-.d-status-page[data-kind="not-found"] .d-street { --st-speed: 0s; }
-.d-street__world { position: absolute; inset: 0; transform-style: preserve-3d; }
-/* the ground is a plane at the height of your feet (62% down), running from just in front of you to the
-   horizon; the buildings are two planes standing on its edges */
-.d-street__ground {
-  position: absolute; top: 62%; left: 50%; width: 720px; height: 2600px; margin-left: -360px; transform-origin: 50% 0;
-  transform: translateZ(360px) rotateX(-90deg);
-  background:
-    linear-gradient(90deg, transparent 150px, var(--st-line) 150px 151px, transparent 151px calc(100% - 151px), var(--st-line) calc(100% - 151px) calc(100% - 150px), transparent calc(100% - 150px)),
-    linear-gradient(0deg, transparent 0 60px, var(--st-line) 60px 120px) 50% 0 / 2px 120px repeat-y,
-    repeating-linear-gradient(90deg, var(--st-line-2) 0 1px, transparent 1px 50px),
-    repeating-linear-gradient(0deg, var(--st-line-2) 0 1px, transparent 1px 60px);
-  animation: d-street-go var(--st-speed) linear infinite;
+.d-status-page[data-kind="offline"] .d-street { --st-accent: var(--accent-warning); --st-ink: var(--st-ink-2); }
+.d-status-page[data-kind="loading"] .d-street { --st-period: 11s; }
+.d-status-page[data-kind="not-found"] .d-street { --st-period: 24s; }
+/* the horizon: one flat hairline */
+.d-street::before { content: ""; position: absolute; left: 0; right: 0; top: var(--st-y); height: 1px; background: var(--st-ink-2); }
+/* the pebble: a single point where the rings begin */
+.d-street::after { content: ""; position: absolute; left: 50%; top: var(--st-y); width: 3px; height: 3px; margin: -1px 0 0 -1.5px; border-radius: var(--radius-pill); background: var(--st-accent); opacity: 0.7; }
+.d-status-page[data-kind="offline"] .d-street::after { opacity: 0.25; }
+.d-street__world { position: absolute; inset: 0; }
+.d-street__world > i {
+  position: absolute; left: 50%; top: var(--st-y); width: min(92vmin, 880px); aspect-ratio: 3.4 / 1; translate: -50% -50%;
+  border: 1px solid var(--st-ink); border-radius: 50%; opacity: 0; transform-origin: 50% 50%;
+  animation: d-ripple-ring var(--st-period) cubic-bezier(0.16, 0.6, 0.3, 1) infinite;
 }
-@keyframes d-street-go { to { background-position: 0 0, 50% -120px, 0 -120px, 0 -120px; } }
-.d-street__wall {
-  position: absolute; top: calc(62% - 300px); left: 50%; width: 2600px; height: 300px; transform-origin: 0 50%;
-  background:
-    linear-gradient(0deg, var(--st-line) 0 1px, transparent 1px),
-    repeating-linear-gradient(90deg, var(--st-line) 0 1px, transparent 1px 260px),
-    repeating-linear-gradient(0deg, transparent 0 34px, var(--st-line-2) 34px 35px, transparent 35px 56px, var(--st-line-2) 56px 57px, transparent 57px 76px),
-    repeating-linear-gradient(90deg, transparent 0 30px, var(--st-line-2) 30px 31px, transparent 31px 52px, var(--st-line-2) 52px 53px, transparent 53px 65px);
-  border-top: 1px solid var(--st-line);
-  animation: d-wall-go var(--st-speed) linear infinite;
-}
-@keyframes d-wall-go { to { background-position: 0 0, -260px 0, -65px 0, -65px 0; } }
-.d-street__wall--l { transform: translateX(-360px) translateZ(360px) rotateY(90deg); }
-.d-street__wall--r { transform: translateX(360px) translateZ(360px) rotateY(90deg); }
-/* people: a pebble for a head, a stroke for a body, two legs that swing */
-.d-street__walker {
-  --x: 0px; --z: -400px; --s: 1;
-  position: absolute; top: 62%; left: 50%; width: 20px; height: 58px; margin: -58px 0 0 -10px;
-  transform: translate3d(var(--x), 0, var(--z)); transform-style: preserve-3d;
-  animation: d-walk-away var(--w-dur, 9s) linear infinite; animation-delay: var(--w-delay, 0s);
-}
-.d-street__walker > b { position: absolute; inset: 0; animation: d-bob 0.5s ease-in-out infinite alternate; }
-.d-street__walker > b::before { /* head */
-  content: ""; position: absolute; top: 0; left: 5px; width: 10px; height: 10px; border: 1.5px solid var(--text-primary); border-radius: 50%;
-}
-.d-street__walker > b::after { /* body */
-  content: ""; position: absolute; top: 10px; left: 9.25px; width: 1.5px; height: 24px; background: var(--text-primary);
-}
-.d-street__walker > i { /* legs */
-  position: absolute; top: 34px; left: 9.25px; width: 1.5px; height: 24px; background: var(--text-primary); transform-origin: 50% 0;
-  animation: d-stride 0.5s ease-in-out infinite alternate;
-}
-.d-street__walker > i + i { animation-direction: alternate-reverse; }
-@keyframes d-stride { from { transform: rotate(22deg); } to { transform: rotate(-22deg); } }
-@keyframes d-bob { to { transform: translateY(-1.5px); } }
-@keyframes d-walk-away { from { transform: translate3d(var(--x), 0, 300px); opacity: 0; } 8% { opacity: 1; } 80% { opacity: 1; } to { transform: translate3d(var(--x), 0, -1100px); opacity: 0; } }
-/* not found: they wander and look about with torches */
-.d-status-page[data-kind="not-found"] .d-street__walker { animation: d-wander var(--w-dur, 14s) ease-in-out infinite; animation-delay: var(--w-delay, 0s); }
-.d-status-page[data-kind="not-found"] .d-street__walker > u {
-  position: absolute; top: 20px; left: 10px; width: 160px; height: 70px; margin-top: -35px; transform-origin: 0 50%;
-  background: color-mix(in srgb, var(--st-accent) 18%, transparent);
-  clip-path: polygon(0 50%, 100% 0, 100% 100%);
-  animation: d-search 3.2s ease-in-out infinite alternate; animation-delay: var(--w-delay, 0s);
-}
-.d-status-page[data-kind="not-found"] .d-street__walker > u::before { /* the arm */
-  content: ""; position: absolute; top: 50%; left: 0; width: 10px; height: 1.5px; background: var(--text-primary);
-}
-@keyframes d-search { from { transform: rotate(-25deg) scaleX(var(--dir, 1)); } to { transform: rotate(35deg) scaleX(var(--dir, 1)); } }
-@keyframes d-wander {
-  0%   { transform: translate3d(var(--x), 0, var(--z)); }
-  30%  { transform: translate3d(calc(var(--x) + var(--dx, 120px)), 0, calc(var(--z) - 140px)); }
-  45%  { transform: translate3d(calc(var(--x) + var(--dx, 120px)), 0, calc(var(--z) - 140px)); }
-  75%  { transform: translate3d(calc(var(--x) - var(--dx, 120px) / 2), 0, calc(var(--z) + 60px)); }
-  100% { transform: translate3d(var(--x), 0, var(--z)); }
-}
-.d-status-page:not([data-kind="not-found"]) .d-street__walker > u { display: none; }
-/* error: everyone stops; offline: nobody is out */
-.d-status-page[data-kind="error"] .d-street__walker, .d-status-page[data-kind="error"] .d-street__walker * { animation: none; }
-.d-status-page[data-kind="error"] .d-street__walker > b::before { border-color: var(--st-accent); }
-.d-status-page[data-kind="offline"] .d-street__walker { display: none; }
-/* the lines are faint enough (16% and 7% ink) that the text reads straight over them */
+.d-street__world > i:nth-child(2) { animation-delay: calc(var(--st-period) / -3); }
+.d-street__world > i:nth-child(3) { animation-delay: calc(var(--st-period) / -1.5); }
+.d-street__world > i:nth-child(n+4), .d-street__walker, .d-street__wall { display: none; }
+@keyframes d-ripple-ring { 0% { scale: 0.04; opacity: 0; } 8% { opacity: 1; } 100% { scale: 1; opacity: 0; } }
+.d-status-page[data-kind="not-found"] .d-street__world > i:first-child { border-color: color-mix(in srgb, var(--st-accent) 40%, transparent); }
+.d-status-page[data-kind="error"] .d-street__world > i, .d-status-page[data-kind="offline"] .d-street__world > i { animation: none; }
+.d-status-page[data-kind="error"] .d-street__world > i:nth-child(1) { scale: 0.34; opacity: 0.9; border-color: color-mix(in srgb, var(--st-accent) 40%, transparent); }
+.d-status-page[data-kind="error"] .d-street__world > i:nth-child(2) { scale: 0.62; opacity: 0.55; }
+.d-status-page[data-kind="error"] .d-street__world > i:nth-child(3) { scale: 0.9; opacity: 0.25; }
+.d-status-page[data-kind="offline"] .d-street__world > i { display: none; }
 .d-status-page:has(> .d-street) .d-status-page__inner { position: relative; padding: var(--space-24); }
 @media (prefers-reduced-motion: reduce) {
-  .d-street *, .d-street *::before, .d-street *::after { animation: none !important; }
+  .d-street__world > i { animation: none !important; }
+  .d-street__world > i:nth-child(1) { scale: 0.34; opacity: 0.9; }
+  .d-street__world > i:nth-child(2) { scale: 0.62; opacity: 0.55; }
+  .d-street__world > i:nth-child(3) { scale: 0.9; opacity: 0.25; }
 }
 /* a product mark in the switchboard tile, in place of initials */
 .d-sidebar__mark { display: grid; place-items: center; flex: none; width: 28px; height: 28px; }
@@ -1541,7 +1480,7 @@ details:not([open]):has(.d-sidebar__subbtn[aria-current]) > summary.d-sidebar__b
    the value in small mono, cut with an ellipsis when long, and a copy icon. it says "copied" for a moment. */
 .d-copyval {
   display: inline-flex; align-items: center; gap: 6px; min-width: 0; max-width: 100%; height: 24px; padding: 0 6px 0 8px;
-  background: var(--bg-well); border: var(--border-w) solid var(--border-default); border-radius: var(--radius-sm);
+  background: var(--bg-well); border: var(--border-w) solid var(--border-field); border-radius: var(--radius-sm);
   color: var(--text-primary); font: inherit; font-size: var(--font-size-xs); cursor: copy;
   transition: border-color var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out);
 }
@@ -1574,7 +1513,7 @@ details:not([open]):has(.d-sidebar__subbtn[aria-current]) > summary.d-sidebar__b
    a section inside a component never gets a fill of its own: headers, footers and groups share the
    component's fill and are split by a hairline. state is a tint laid over whatever layer it is on
    (bg-hover, bg-press), and small tracks and chips use bg-fill, so they read the same on every layer. */
-.d-input { border-color: var(--border-default); }
+.d-input { border-color: var(--border-field); }
 .d-input:hover, .d-input:active { background: var(--bg-well); border-color: var(--border-control); }
 .d-input:focus, .d-input:focus-visible { background: var(--bg-well); border-color: var(--border-control); }
 .d-palette__prompt { background: var(--bg-well); }

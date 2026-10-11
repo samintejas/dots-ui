@@ -8,7 +8,7 @@ use crate::util::{tf, when_true};
 pub enum ButtonVariant {
     /// `accent-primary` fill. One per view.
     Primary,
-    /// 1px `border-strong`, no fill. The default choice.
+    /// A soft edge (`border-soft`) and, in dark, a faint fill (`bg-control`). The default choice.
     #[default]
     Secondary,
     /// Text only. Toolbars, row actions.

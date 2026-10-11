@@ -48,7 +48,7 @@ layer; tracks and small chips use `bg-fill`. `Surface level=Elevation::…` wrap
 | actions | `Button`, `Menu` (+ items, radio, checkbox), `ContextMenu`, `CommandPalette` |
 | forms | `TextField`, `Select`, `Checkbox`, `Radio`, `Switch`, `Slider`, `Segmented`, `TagInput`, `InputBar`, `FilterBar`, `SettingRow` |
 | content | `Card`, `Table`, `List`, `Avatar`, `Badge`, `CopyValue`, `CodeBlock`, `Accordion`, `HeroMetric`, `EmptyState` |
-| status | `StatusPage` (with the street), `Pebbles`, `Toast`, `StatusChip`, `Progress`, `Meter`, `Stepper`, `Feed` |
+| status | `StatusPage` (on still water), `Pebbles`, `Toast`, `StatusChip`, `Progress`, `Meter`, `Stepper`, `Feed` |
 | other | `Chat`, `AppSwitcher`, `Tabs`, `Breadcrumbs`, `Pager`, `WorkspaceDots`, `Dialog`, `Sheet`, `Icon` |
 
 Run the gallery: `gallery/build.sh`, then `python3 -m http.server -d gallery/dist 8080`.
