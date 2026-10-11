@@ -45,7 +45,8 @@ impl StatusKind {
 /// buttons (a verb each: `go to transactions`, `retry now`); `foot` is a small line at the bottom (a request id,
 /// the app's name).
 ///
-/// It is the one place the ground moves: a slow ring of water spreading from the centre, tinted by the kind.
+/// Behind it is the [`Street`]: a wireframe street with a few people on it. Loading, they walk away down it;
+/// not found, they search it with torches; error, they stop; offline, nobody is out.
 #[component]
 pub fn StatusPage(
     #[prop(optional)] kind: StatusKind,
@@ -62,6 +63,7 @@ pub fn StatusPage(
     let still = matches!(kind, StatusKind::Error | StatusKind::Offline);
     view! {
         <main id="main" tabindex="-1" class="d-status-page" data-kind=kind.as_str()>
+            <Street/>
             <div class="d-status-page__inner">
                 {if still { ().into_any() } else { mark }}
                 <h1 class="d-status-page__title">{title}</h1>
@@ -70,5 +72,27 @@ pub fn StatusPage(
             </div>
             {foot.map(|f| view! { <div class="d-status-page__foot">{f}</div> })}
         </main>
+    }
+}
+
+/// The wireframe street behind a [`StatusPage`]: decorative (`aria-hidden`), pure css, four people on the pavements.
+/// What they do comes from the page's `data-kind`.
+#[component]
+pub fn Street() -> impl IntoView {
+    // (x across, z toward or away, delay, how far they wander, torch faces left)
+    const PEOPLE: [(i32, i32, i32, i32, bool); 4] = [(-280, 200, -2, 70, false), (300, 120, -7, -90, true), (-290, -380, -4, 110, false), (270, -640, -11, -100, true)];
+    view! {
+        <div class="d-street" aria-hidden="true">
+            <div class="d-street__world">
+                <i class="d-street__ground"></i>
+                <i class="d-street__wall d-street__wall--l"></i>
+                <i class="d-street__wall d-street__wall--r"></i>
+                {PEOPLE.iter().map(|&(x, z, d, dx, left)| view! {
+                    <span class="d-street__walker" style=format!("--x:{x}px;--z:{z}px;--w-delay:{d}s;--dx:{dx}px")>
+                        <b></b><i></i><i></i><u style=left.then_some("--dir:-1")></u>
+                    </span>
+                }).collect_view()}
+            </div>
+        </div>
     }
 }

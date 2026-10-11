@@ -1447,3 +1447,107 @@ details:not([open]):has(.d-sidebar__subbtn[aria-current]) > summary.d-sidebar__b
   .d-chat__thinking { animation: none; color: var(--text-secondary); background: none; }
   .d-chat__steps li[data-state="active"]::before { animation: none; }
 }
+
+/* ---------- the street: a wireframe world behind status pages ----------
+   a street drawn in hairlines, running from your feet to the horizon, with buildings on both sides and a
+   few people on it. loading: they walk away down the street and it keeps coming (you are on your way).
+   not found: they wander with torches, looking for the page. error: they stand still. offline: the lights
+   are out and the street is empty. pure css in 3d; the markup is static, so a framework can render it.
+   reduced motion: everything stands still, the scene stays. */
+.d-status-page:has(> .d-street)::before, .d-status-page:has(> .d-street)::after { content: none; }
+.d-street {
+  --st-line: color-mix(in srgb, var(--text-max) 16%, transparent);
+  --st-line-2: color-mix(in srgb, var(--text-max) 7%, transparent);
+  --st-accent: var(--accent-primary);
+  --st-speed: 0s;
+  position: absolute; inset: 0; z-index: -1; overflow: hidden; pointer-events: none;
+  perspective: 520px; perspective-origin: 50% 34%;
+}
+.d-status-page[data-kind="error"] .d-street { --st-accent: var(--accent-danger); }
+.d-status-page[data-kind="offline"] .d-street { --st-accent: var(--accent-warning); --st-line: color-mix(in srgb, var(--text-max) 8%, transparent); --st-line-2: color-mix(in srgb, var(--text-max) 4%, transparent); }
+.d-status-page[data-kind="loading"] .d-street { --st-speed: 2.4s; }
+.d-status-page[data-kind="not-found"] .d-street { --st-speed: 0s; }
+.d-street__world { position: absolute; inset: 0; transform-style: preserve-3d; }
+/* the ground is a plane at the height of your feet (62% down), running from just in front of you to the
+   horizon; the buildings are two planes standing on its edges */
+.d-street__ground {
+  position: absolute; top: 62%; left: 50%; width: 720px; height: 2600px; margin-left: -360px; transform-origin: 50% 0;
+  transform: translateZ(360px) rotateX(-90deg);
+  background:
+    linear-gradient(90deg, transparent 150px, var(--st-line) 150px 151px, transparent 151px calc(100% - 151px), var(--st-line) calc(100% - 151px) calc(100% - 150px), transparent calc(100% - 150px)),
+    linear-gradient(0deg, transparent 0 60px, var(--st-line) 60px 120px) 50% 0 / 2px 120px repeat-y,
+    repeating-linear-gradient(90deg, var(--st-line-2) 0 1px, transparent 1px 50px),
+    repeating-linear-gradient(0deg, var(--st-line-2) 0 1px, transparent 1px 60px);
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 12%, #000 30%, transparent 95%); mask-image: linear-gradient(to bottom, transparent 0, #000 12%, #000 30%, transparent 95%);
+  animation: d-street-go var(--st-speed) linear infinite;
+}
+@keyframes d-street-go { to { background-position: 0 0, 50% -120px, 0 -120px, 0 -120px; } }
+.d-street__wall {
+  position: absolute; top: calc(62% - 300px); left: 50%; width: 2600px; height: 300px; transform-origin: 0 50%;
+  background:
+    linear-gradient(0deg, var(--st-line) 0 1px, transparent 1px),
+    repeating-linear-gradient(90deg, var(--st-line) 0 1px, transparent 1px 260px),
+    repeating-linear-gradient(0deg, transparent 0 34px, var(--st-line-2) 34px 35px, transparent 35px 56px, var(--st-line-2) 56px 57px, transparent 57px 76px),
+    repeating-linear-gradient(90deg, transparent 0 30px, var(--st-line-2) 30px 31px, transparent 31px 52px, var(--st-line-2) 52px 53px, transparent 53px 65px);
+  border-top: 1px solid var(--st-line);
+  -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 10%, #000 30%, transparent 95%); mask-image: linear-gradient(90deg, transparent 0, #000 10%, #000 30%, transparent 95%);
+  animation: d-wall-go var(--st-speed) linear infinite;
+}
+@keyframes d-wall-go { to { background-position: 0 0, -260px 0, -65px 0, -65px 0; } }
+.d-street__wall--l { transform: translateX(-360px) translateZ(360px) rotateY(90deg); }
+.d-street__wall--r { transform: translateX(360px) translateZ(360px) rotateY(90deg); }
+/* people: a pebble for a head, a stroke for a body, two legs that swing */
+.d-street__walker {
+  --x: 0px; --z: -400px; --s: 1;
+  position: absolute; top: 62%; left: 50%; width: 20px; height: 58px; margin: -58px 0 0 -10px;
+  transform: translate3d(var(--x), 0, var(--z)); transform-style: preserve-3d;
+  animation: d-walk-away var(--w-dur, 9s) linear infinite; animation-delay: var(--w-delay, 0s);
+}
+.d-street__walker > b { position: absolute; inset: 0; animation: d-bob 0.5s ease-in-out infinite alternate; }
+.d-street__walker > b::before { /* head */
+  content: ""; position: absolute; top: 0; left: 5px; width: 10px; height: 10px; border: 1.5px solid var(--text-primary); border-radius: 50%;
+}
+.d-street__walker > b::after { /* body */
+  content: ""; position: absolute; top: 10px; left: 9.25px; width: 1.5px; height: 24px; background: var(--text-primary);
+}
+.d-street__walker > i { /* legs */
+  position: absolute; top: 34px; left: 9.25px; width: 1.5px; height: 24px; background: var(--text-primary); transform-origin: 50% 0;
+  animation: d-stride 0.5s ease-in-out infinite alternate;
+}
+.d-street__walker > i + i { animation-direction: alternate-reverse; }
+@keyframes d-stride { from { transform: rotate(22deg); } to { transform: rotate(-22deg); } }
+@keyframes d-bob { to { transform: translateY(-1.5px); } }
+@keyframes d-walk-away { from { transform: translate3d(var(--x), 0, 300px); opacity: 0; } 8% { opacity: 1; } 80% { opacity: 1; } to { transform: translate3d(var(--x), 0, -1100px); opacity: 0; } }
+/* not found: they wander and look about with torches */
+.d-status-page[data-kind="not-found"] .d-street__walker { animation: d-wander var(--w-dur, 14s) ease-in-out infinite; animation-delay: var(--w-delay, 0s); }
+.d-status-page[data-kind="not-found"] .d-street__walker > u {
+  position: absolute; top: 20px; left: 10px; width: 160px; height: 70px; margin-top: -35px; transform-origin: 0 50%;
+  background: color-mix(in srgb, var(--st-accent) 34%, transparent);
+  clip-path: polygon(0 50%, 100% 0, 100% 100%);
+  -webkit-mask-image: linear-gradient(90deg, #000, transparent); mask-image: linear-gradient(90deg, #000, transparent);
+  animation: d-search 3.2s ease-in-out infinite alternate; animation-delay: var(--w-delay, 0s);
+}
+.d-status-page[data-kind="not-found"] .d-street__walker > u::before { /* the arm */
+  content: ""; position: absolute; top: 50%; left: 0; width: 10px; height: 1.5px; background: var(--text-primary);
+}
+@keyframes d-search { from { transform: rotate(-25deg) scaleX(var(--dir, 1)); } to { transform: rotate(35deg) scaleX(var(--dir, 1)); } }
+@keyframes d-wander {
+  0%   { transform: translate3d(var(--x), 0, var(--z)); }
+  30%  { transform: translate3d(calc(var(--x) + var(--dx, 120px)), 0, calc(var(--z) - 140px)); }
+  45%  { transform: translate3d(calc(var(--x) + var(--dx, 120px)), 0, calc(var(--z) - 140px)); }
+  75%  { transform: translate3d(calc(var(--x) - var(--dx, 120px) / 2), 0, calc(var(--z) + 60px)); }
+  100% { transform: translate3d(var(--x), 0, var(--z)); }
+}
+.d-status-page:not([data-kind="not-found"]) .d-street__walker > u { display: none; }
+/* error: everyone stops; offline: nobody is out */
+.d-status-page[data-kind="error"] .d-street__walker, .d-status-page[data-kind="error"] .d-street__walker * { animation: none; }
+.d-status-page[data-kind="error"] .d-street__walker > b::before { border-color: var(--st-accent); }
+.d-status-page[data-kind="offline"] .d-street__walker { display: none; }
+/* the content sits on a quiet patch of ground so it always reads over the lines */
+.d-status-page:has(> .d-street) .d-status-page__inner { position: relative; padding: var(--space-24); }
+.d-status-page:has(> .d-street) .d-status-page__inner::before {
+  content: ""; position: absolute; z-index: -1; inset: -16px -48px; background: radial-gradient(closest-side, var(--bg-base) 60%, transparent);
+}
+@media (prefers-reduced-motion: reduce) {
+  .d-street *, .d-street *::before, .d-street *::after { animation: none !important; }
+}
