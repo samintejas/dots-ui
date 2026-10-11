@@ -32,6 +32,14 @@ view! {
 - `on:…` and `attr:…` reach the root element. Don't use `attr:class` (it replaces); use `class:name=true`.
 - State is never colour-only, and native elements stay native (`<dialog>`, `<details>`, checkbox, range).
 
+## layers
+
+Every background is one of five layers, darker further back: `bg-well` (#000) where you type, `bg-base` the page and
+every layout tile, `bg-surface` a component that holds content, `bg-raised` menus and toasts, `bg-overlay` dialogs and
+the palette. The components already carry theirs. In your own markup: a section inside a component shares its fill
+and gets a hairline, never a fill of its own; hover and pressed are `bg-hover` and `bg-press`, tints that work on any
+layer; tracks and small chips use `bg-fill`. `Surface level=Elevation::…` wraps a block in one layer.
+
 ## what is in it
 
 | area | components |

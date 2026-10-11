@@ -233,7 +233,25 @@ fn ComponentTour(
         );
     };
 
+    let layer = |level: Elevation, name: &'static str, what: &'static str| view! {
+        <Surface level=level>
+            <div style="display:grid;gap:2px;min-height:72px;padding:var(--space-12);font-size:var(--font-size-xs);color:var(--text-secondary)">
+                <b style="color:var(--text-strong);font-size:var(--font-size-sm);font-weight:500">{name}</b>
+                <span>{what}</span>
+            </div>
+        </Surface>
+    };
     view! {
+        <Section title="layers">
+            <p class="d-hint">"darker is further back. sections share their layer's fill; hover and pressed are tints over any layer."</p>
+            <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:var(--space-12)">
+                {layer(Elevation::Well, "well", "where you type")}
+                {layer(Elevation::Base, "base", "the page and layout")}
+                {layer(Elevation::Surface, "surface", "cards, tables")}
+                {layer(Elevation::Raised, "raised", "menus, toasts")}
+                {layer(Elevation::Overlay, "overlay", "dialogs, the palette")}
+            </div>
+        </Section>
         <Section title="button">
             <div class="d-row" style="gap:var(--space-8)">
                 <Button variant=ButtonVariant::Primary>"deploy"</Button>

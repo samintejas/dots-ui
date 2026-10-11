@@ -1581,3 +1581,5 @@ details:not([open]):has(.d-sidebar__subbtn[aria-current]) > summary.d-sidebar__b
 .d-chat__composer, .d-chat__composer:has(.d-chat__bar) { background: var(--bg-well); }
 .d-inputbar { background: var(--bg-well); }
 .d-inputbar__seg:hover, .d-inputbar__seg:focus-within { background: var(--bg-hover); }
+.d-elev-inset { border-color: var(--border-default); }
+.d-elev-0 { border: var(--border-w) solid var(--border-default); }

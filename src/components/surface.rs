@@ -1,24 +1,31 @@
 use leptos::prelude::*;
 
-/// Elevation levels. A level is a surface step and a stronger border; only floating layers cast a shadow.
+/// The five background layers, darker is further back. Only raised and overlay cast a shadow.
+/// Sections inside a layer share its fill and are split by a hairline; state is a tint
+/// (`bg-hover`, `bg-press`) over whatever layer it sits on, never a layer of its own.
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
 pub enum Elevation {
-    /// Sunk into the page: input wells, tracks.
+    /// The darkest: where you type or a value sits (`bg-well`).
+    Well,
+    /// The old name for `Well`.
     Inset,
-    /// Rests on the page: cards, panels.
+    /// The ground: the page and layout tiles (`bg-base`).
+    Base,
+    /// One step up: a component that holds content, like a card or a panel (`bg-surface`).
     #[default]
     Surface,
-    /// Floats over it and the page stays usable: menus, popovers.
+    /// Floats over the page and the page stays usable: menus, popovers (`bg-raised`).
     Raised,
-    /// Blocks the page: dialogs, sheets.
+    /// Blocks the page: dialogs, sheets (`bg-overlay`).
     Overlay,
 }
 
-/// A `div` carrying a whole elevation level (fill, border and shadow together).
+/// A `div` carrying a whole layer (fill, border and shadow together).
 #[component]
 pub fn Surface(#[prop(optional)] level: Elevation, children: Children) -> impl IntoView {
     let class = match level {
-        Elevation::Inset => "d-elev-inset",
+        Elevation::Well | Elevation::Inset => "d-elev-inset",
+        Elevation::Base => "d-elev-0",
         Elevation::Surface => "d-elev-1",
         Elevation::Raised => "d-elev-2",
         Elevation::Overlay => "d-elev-3",
