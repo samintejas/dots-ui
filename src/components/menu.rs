@@ -215,6 +215,9 @@ pub fn Menu(
     /// Stay open while checkbox rows are toggled; give it a [`MenuFoot`] with `clear` and `done`, which stays pinned to the bottom while the rows scroll.
     #[prop(optional)]
     multi: bool,
+    /// Extra classes on the panel, for a menu laid out differently (`d-apps` for [`AppSwitcher`](crate::AppSwitcher)).
+    #[prop(optional)]
+    panel_class: &'static str,
     children: Children,
 ) -> impl IntoView {
     let panel = NodeRef::<leptos::html::Div>::new();
@@ -294,7 +297,7 @@ pub fn Menu(
     let keydown = menu_keydown(buf);
     view! {
         {trigger.run()}
-        <div class="d-menu" id=id role="menu" aria-label=label data-multi=multi.then_some("") hidden node_ref=panel on:keydown=keydown on:click=menu_click>
+        <div class=if panel_class.is_empty() { "d-menu".to_string() } else { format!("d-menu {panel_class}") } id=id role="menu" aria-label=label data-multi=multi.then_some("") hidden node_ref=panel on:keydown=keydown on:click=menu_click>
             {children()}
         </div>
     }

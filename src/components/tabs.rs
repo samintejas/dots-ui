@@ -22,17 +22,26 @@ pub fn Tabs(value: RwSignal<String>, children: Children) -> impl IntoView {
     children()
 }
 
-/// The `role="tablist"`. Left/right move and select (wrapping), home/end jump.
+/// The `role="tablist"`. Left/right (up/down when `vertical`) move and select, wrapping; home/end jump.
 #[component]
-pub fn TabList(#[prop(into)] label: String, children: Children) -> impl IntoView {
+pub fn TabList(
+    #[prop(into)] label: String,
+    /// Stacked down the side with a left bar for the selected tab, for panels with many sections. Put it and
+    /// the panels in a [`SectionNavLayout`](crate::SectionNavLayout).
+    #[prop(optional)]
+    vertical: bool,
+    children: Children,
+) -> impl IntoView {
     let onkey = move |e: leptos::ev::KeyboardEvent| {
         let Some(list) = e.current_target().and_then(|t| t.dyn_into::<web_sys::Element>().ok()) else { return };
         let ok: Vec<_> = dom::query_all(&list, "[role=tab]").into_iter().filter(dom::enabled).collect();
         let Some(i) = dom::active_element().and_then(|a| ok.iter().position(|o| *o == a)) else { return };
         let n = ok.len();
         let j = match e.key().as_str() {
-            "ArrowRight" => (i + 1) % n,
-            "ArrowLeft" => (i + n - 1) % n,
+            "ArrowRight" if !vertical => (i + 1) % n,
+            "ArrowLeft" if !vertical => (i + n - 1) % n,
+            "ArrowDown" if vertical => (i + 1) % n,
+            "ArrowUp" if vertical => (i + n - 1) % n,
             "Home" => 0,
             "End" => n - 1,
             _ => return,
@@ -43,7 +52,11 @@ pub fn TabList(#[prop(into)] label: String, children: Children) -> impl IntoView
             h.click();
         }
     };
-    view! { <div class="d-tabs" role="tablist" aria-label=label on:keydown=onkey>{children()}</div> }
+    view! {
+        <div class="d-tabs" role="tablist" aria-label=label aria-orientation=vertical.then_some("vertical") on:keydown=onkey>
+            {children()}
+        </div>
+    }
 }
 
 /// One tab. A count goes in a `Badge count`.

@@ -8,7 +8,7 @@ same native and ARIA attributes the stylesheet reads (`aria-selected`, `data-sta
 signals. It does not need `dots.js`.
 
 - Leptos **0.8** (stable). Features `csr`, `hydrate`, `ssr` are forwarded to `leptos`; enable the one your app uses.
-- 60+ components and parts, the full stylesheet, tokens, Geist Mono and 56 Lucide icons are in the crate.
+- 70+ components and parts, the full stylesheet, tokens, Geist Mono and 76 Lucide icons are in the crate.
 - Browser baseline: evergreen since early 2024 (`<dialog>`, `:has()`, container queries, `color-mix()`).
 
 ## use it
@@ -66,10 +66,10 @@ The gallery in `gallery/` uses every component: `gallery/build.sh` then
 | area | components |
 |---|---|
 | actions | `Button`, `ButtonLink`, `Menu`, `ContextMenu`, `MenuItem`, `MenuLink`, `MenuCheckbox`, `MenuRadioGroup`, `MenuRadio`, `MenuSeparator`, `MenuLabel`, `MenuHead`, `MenuFoot` |
-| forms | `FilterBar` (`FilterSearch`, `Filter`, `FilterActive`), `InputBar` (`InputSeg`, `InputBarSubmit`), `TagInput`, `TextField`, `Select`, `Checkbox`, `RadioGroup` + `Radio`, `Switch`, `Slider`, `Field`, `Label`, `Hint`, `ErrorText` |
-| status | `StatusChip`, `StatusButton`, `Badge`, `Tag`, `Progress`, `ProgressRow`, `Meter`, `MeterRow`, `Ring`, `Spinner`, `Toast` + `ToastProvider` + `use_toasts()` |
+| forms | `Segmented` + `SegOption`, `SettingRows` + `SettingRow`, `SettingGrid`, `FilterBar` (`FilterSearch`, `Filter`, `FilterActive`), `InputBar` (`InputSeg`, `InputBarSubmit`), `TagInput`, `TextField`, `Select`, `Checkbox`, `RadioGroup` + `Radio`, `Switch`, `Slider`, `Field`, `Label`, `Hint`, `ErrorText` |
+| status | `Stepper`, `Feed` + `FeedItem`, `StatusChip`, `StatusButton`, `Badge`, `Tag`, `Progress`, `ProgressRow`, `Meter`, `MeterRow`, `Ring`, `Spinner`, `Toast` + `ToastProvider` + `use_toasts()` |
 | content | `Card` (`CardHead`, `CardBody`, `CardFoot`, `CardButton`, `CardLink`), `List`, `ListItem`, `Listbox`, `ListOption`, `Table` (`Th`, `Tr`, `Td`, `EditCell`), `Accordion`, `CodeBlock`, `HeroMetric`, `HeroClock`, `EmptyState`, `EmptyLoading`, `EmptyError`, `Avatar` (`AvatarImage`, `AvatarGroup`, `Identity`), `Kbd`/`Keys`, `Divider`, `Surface` (elevation) |
-| navigation | `Tabs` (`TabList`, `Tab`, `TabPanel`), `Breadcrumbs`, `Pager`, `Chat`, `WorkspaceDots`, `WorkspaceSteps`, `CommandPalette` |
+| navigation | `AppSwitcher` + `AppTile`, `SectionNav` (`SectionNavItem`, `SectionNavLabel`, `SectionNavLayout`), `Tabs` (`TabList` across or `vertical`, `Tab`, `TabPanel`), `Breadcrumbs`, `Pager`, `Chat`, `WorkspaceDots`, `WorkspaceSteps`, `CommandPalette` |
 | layout | `Shell`, `ShellMain`, `Main`, `SkipLink`, `ShellToggle`, `AppBar` (+ parts), `Sidebar` (+ switcher, filter, groups, items, parents, actions, account), `RightBar`, `BottomBar`, `SplitPane` + `Pane` |
 | overlays | `Dialog`, `Sheet`, `DialogClose`, `use_dialog()`, tooltips via `data-tooltip` |
 | setup | `DotsProvider`, `ThemeProvider`, `use_theme()`, `DotsStyles`, `Icon`, `icon_names()` |
@@ -86,6 +86,10 @@ The gallery in `gallery/` uses every component: `gallery/build.sh` then
   classes (one token span never crosses a line break; you escape).
 - **Shell**: needs a fixed height (`100dvh` by default). Ctrl+B / Ctrl+Alt+B / Ctrl+J toggle the bars, the tiles
   stack under 768px, and `persist="key"` remembers the state. Drive it from outside with `ShellState`.
+- **Segmented** is a radio group: one tab stop, arrows select. Two to five options; more is a `Select`.
+- **SectionNav** is for sections that are routes (`/settings/profile`); a vertical `TabList` is for panels that
+  switch in place. Both sit in a `SectionNavLayout`, which stacks the nav on top under 768px.
+- **AppSwitcher** is a `Menu` with a grid panel (`panel_class="d-apps"`); any `Menu` takes `panel_class`.
 - **Dialog**: `dismiss=false` ignores the scrim and focuses the first footer button (cancel).
 - **Theme**: `use_theme()` is an `RwSignal<Theme>` mirrored to `data-theme` on `<html>`.
 

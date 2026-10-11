@@ -1,6 +1,12 @@
 //! The components, one module each. All are re-exported flat from the crate root and the prelude.
 
 pub mod accordion;
+pub mod app_switcher;
+pub mod feed;
+pub mod section_nav;
+pub mod segmented;
+pub mod setting;
+pub mod stepper;
 pub mod chat;
 pub mod data;
 pub mod filter_bar;
@@ -36,6 +42,12 @@ pub mod toast;
 pub mod tooltip;
 
 pub use accordion::*;
+pub use app_switcher::*;
+pub use feed::*;
+pub use section_nav::*;
+pub use segmented::*;
+pub use setting::*;
+pub use stepper::*;
 pub use chat::{Chat, ChatMessage, From as ChatFrom};
 pub use data::*;
 pub use filter_bar::*;

@@ -213,6 +213,11 @@ fn ComponentTour(
     let messages = RwSignal::new(Vec::<ChatMessage>::new());
     let next_id = RwSignal::new(0u64);
     let bar_error = RwSignal::new(None::<String>);
+    let kind = RwSignal::new("expense".to_string());
+    let cycle = RwSignal::new("monthly".to_string());
+    let step = RwSignal::new(1usize);
+    let vtab = RwSignal::new("profile".to_string());
+    let unread = RwSignal::new(true);
     let on_send = move |q: String| {
         let id = next_id.get_untracked();
         next_id.set(id + 2);
@@ -347,6 +352,83 @@ fn ComponentTour(
             <Avatar initials="ac" name="acme inc" square=true size=AvatarSize::Lg/>
             <Avatar initials="st" name="samin t" size=AvatarSize::Xl status=Presence::Online/>
             <Button icon=true variant=ButtonVariant::Ghost label="notifications, 12 unread" count=12u32><Icon name="bell"/></Button>
+        </Section>
+        <Section title="segmented, stepper">
+            <Segmented value=kind label="kind of transaction" size=Size::Lg fill=true>
+                <SegOption value="expense">"expense"</SegOption>
+                <SegOption value="income">"income"</SegOption>
+                <SegOption value="transfer">"transfer"</SegOption>
+            </Segmented>
+            <Segmented value=cycle label="billing cycle">
+                <SegOption value="monthly">"monthly"</SegOption>
+                <SegOption value="yearly">"yearly"</SegOption>
+                <SegOption value="weekly" disabled=true>"weekly"</SegOption>
+            </Segmented>
+            <Stepper steps=vec!["kind".to_string(), "details".to_string(), "review".to_string()] current=step/>
+            <div class="d-row" style="gap:var(--space-8)">
+                <Button on:click=move |_| step.update(|s| *s = s.saturating_sub(1))>"back"</Button>
+                <Button variant=ButtonVariant::Primary on:click=move |_| step.update(|s| *s = (*s + 1).min(3))>"next"</Button>
+            </div>
+        </Section>
+        <Section title="section nav, vertical tabs, setting rows">
+            <SectionNavLayout height="320px">
+                <SectionNav label="settings">
+                    <SectionNavItem href="#profile" icon="user" label="profile" current=true/>
+                    <SectionNavItem href="#security" icon="lock" label="security"/>
+                    <SectionNavItem href="#family" icon="users" label="family" count=Signal::derive(|| "2".to_string())/>
+                    <SectionNavLabel>"apps"</SectionNavLabel>
+                    <SectionNavItem href="#connectors" icon="plug" label="connectors"/>
+                </SectionNav>
+                <div>
+                    <SettingGrid>
+                        <section class="d-card">
+                            <CardHead title="display"/>
+                            <CardBody>
+                                <SettingRows>
+                                    <SettingRow label="theme" hint="dark is the reference">
+                                        <Segmented value=cycle label="theme">
+                                            <SegOption value="monthly" label="dark"><Icon name="moon"/></SegOption>
+                                            <SegOption value="yearly" label="light"><Icon name="sun"/></SegOption>
+                                        </Segmented>
+                                    </SettingRow>
+                                    <SettingRow label="email me about renewals" toggle=true><input type="checkbox" role="switch" class="d-switch" checked/></SettingRow>
+                                    <SettingRow label="export" hint="accounts and transactions, as csv"><Button><Icon name="download"/>"export"</Button></SettingRow>
+                                </SettingRows>
+                            </CardBody>
+                        </section>
+                    </SettingGrid>
+                </div>
+            </SectionNavLayout>
+            <Tabs value=vtab>
+                <SectionNavLayout height="160px">
+                    <TabList label="account" vertical=true>
+                        <Tab value="profile">"profile"</Tab>
+                        <Tab value="security">"security"</Tab>
+                    </TabList>
+                    <div>
+                        <TabPanel value="profile">"profile panel. up and down move between tabs."</TabPanel>
+                        <TabPanel value="security">"security panel."</TabPanel>
+                    </div>
+                </SectionNavLayout>
+            </Tabs>
+        </Section>
+        <Section title="feed, app switcher">
+            <div class="d-card" style="max-width:380px">
+                <Feed label="notifications">
+                    <FeedItem title="streaming video renews tomorrow" text="₹649 from card, anita" time="today" unread=unread on_select=Callback::new(move |()| unread.set(false))/>
+                    <FeedItem title="home loan emi is due" time="yesterday" unread=true severity=Severity::Warning href="#loan"/>
+                    <FeedItem title="anita joined rao family" time="05 oct"/>
+                </Feed>
+            </div>
+            <AppBar>
+                <AppBarTitle>"pebblelab/fin"</AppBarTitle>
+                <AppBarSpacer/>
+                <AppSwitcher foot=|| view! { <MenuLink href="#account">"manage your pebblelab account"</MenuLink> }>
+                    <AppTile href="#fin" name="fin" icon="wallet" current=true/>
+                    <AppTile href="#account" name="account" icon="user"/>
+                    <AppTile href="#notes" name="notes" icon="scroll-text" disabled=true/>
+                </AppSwitcher>
+            </AppBar>
         </Section>
         <Section title="chat">
             <div style="height:360px">

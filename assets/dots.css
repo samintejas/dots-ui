@@ -1089,3 +1089,109 @@ details:not([open]):has(.d-sidebar__subbtn[aria-current]) > summary.d-sidebar__b
 
 /* 20px icon, for empty states and headers (used by the tracer/fin design; missing from the upstream bundle) */
 .d-icon--lg { width: 20px; height: 20px; vertical-align: -4px; }
+
+/* ---------- segmented: one choice from two to five, drawn as one control ---------- */
+.d-seg { display: inline-flex; flex: none; max-width: 100%; background: var(--bg-inset); border-radius: var(--radius-sm); overflow: hidden; }
+.d-seg--fill { display: flex; width: 100%; }
+.d-seg__opt {
+  display: inline-flex; align-items: center; justify-content: center; gap: var(--space-8); flex: 1 1 0; min-width: 0; height: var(--control-h); padding: 0 var(--space-12);
+  border: 0; border-bottom: var(--border-w-active) solid transparent; background: none; color: var(--text-secondary); font: inherit; font-weight: var(--weight-medium); white-space: nowrap; cursor: pointer;
+  transition: background-color var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out);
+}
+.d-seg--lg .d-seg__opt { height: var(--control-h-lg); }
+.d-seg__opt:hover { background: var(--bg-hover); color: var(--text-strong); }
+.d-seg__opt:active { background: var(--bg-surface); }
+.d-seg__opt:is([aria-checked="true"], [aria-pressed="true"]) { background: var(--accent-primary-subtle); border-bottom-color: var(--accent-primary); color: var(--text-max); }
+.d-seg__opt:focus-visible { outline-offset: -2px; }
+.d-seg__opt:disabled, .d-seg__opt[aria-disabled="true"] { background: none; color: var(--text-disabled); cursor: not-allowed; }
+
+/* ---------- stepper: where you are in a short, ordered flow ---------- */
+.d-stepper { display: flex; flex-wrap: wrap; gap: var(--space-8) var(--space-24); margin: 0; padding: 0 0 var(--space-12); list-style: none; border-bottom: var(--border-w) solid var(--border-default); }
+.d-stepper__step { display: flex; align-items: center; gap: var(--space-8); color: var(--text-secondary); }
+.d-stepper__n { display: grid; place-items: center; flex: none; width: 20px; height: 20px; border: var(--border-w) solid var(--border-strong); border-radius: var(--radius-pill); font-size: var(--font-size-xs); font-weight: var(--weight-medium); }
+.d-stepper__n .d-icon { width: 12px; height: 12px; vertical-align: 0; }
+.d-stepper__step[aria-current="step"] { color: var(--text-max); }
+.d-stepper__step[aria-current="step"] .d-stepper__n { border-color: var(--accent-primary); color: var(--text-max); }
+.d-stepper__step[data-state="done"] { color: var(--text-primary); }
+.d-stepper__step[data-state="done"] .d-stepper__n { border-color: var(--border-strong); background: var(--bg-hover); color: var(--text-strong); }
+.d-stepper--vertical { flex-direction: column; flex-wrap: nowrap; padding: 0 var(--space-12) 0 0; border-bottom: 0; border-right: var(--border-w) solid var(--border-default); }
+
+/* ---------- section nav and vertical tabs: the sections of one page, listed down the side ---------- */
+.d-secnav, .d-tabs[aria-orientation="vertical"] { display: flex; flex-direction: column; gap: var(--space-2); min-width: 0; min-height: 0; padding-right: var(--space-16); border-bottom: 0; border-right: var(--border-w) solid var(--border-default); overflow: visible; }
+.d-secnav__item, .d-tabs[aria-orientation="vertical"] .d-tab {
+  display: flex; align-items: center; gap: 10px; height: var(--control-h-lg); padding: 0 var(--space-12); border: 0; border-left: var(--border-w-active) solid transparent; margin: 0;
+  background: none; color: var(--text-primary); font: inherit; text-align: left; text-decoration: none; white-space: nowrap; cursor: pointer;
+}
+.d-secnav__item:hover, .d-tabs[aria-orientation="vertical"] .d-tab:hover { background: var(--bg-hover); color: var(--text-strong); }
+.d-secnav__item:active { background: var(--bg-inset); }
+.d-secnav__item:is([aria-current="page"], [aria-current="true"], [aria-selected="true"]), .d-tabs[aria-orientation="vertical"] .d-tab[aria-selected="true"] { background: var(--bg-hover); border-left-color: var(--mark); color: var(--text-max); }
+.d-secnav__item:focus-visible { outline-offset: -2px; }
+.d-secnav__item .d-badge { margin-left: auto; }
+.d-secnav__label { padding: var(--space-12) var(--space-12) var(--space-4); color: var(--text-secondary); font-size: var(--font-size-xs); }
+.d-secnav__label:first-child { padding-top: 0; }
+/* the page: sections on the left, the open one beside them, each scrolling on its own */
+.d-secnav-layout { display: grid; grid-template-columns: 216px minmax(0, 1fr); gap: var(--space-24); min-height: 0; }
+.d-secnav-layout > :last-child { min-width: 0; min-height: 0; overflow: auto; display: flex; flex-direction: column; gap: var(--space-16); }
+@media (max-width: 768px) {
+  .d-secnav-layout { grid-template-columns: minmax(0, 1fr); }
+  .d-secnav-layout > :last-child { overflow: visible; }
+  .d-secnav, .d-secnav-layout .d-tabs[aria-orientation="vertical"] { flex-direction: row; flex-wrap: wrap; padding: 0 0 var(--space-8); border-right: 0; border-bottom: var(--border-w) solid var(--border-default); }
+  .d-secnav__label { display: none; }
+}
+
+/* ---------- setting rows: a label, an optional hint, and the control that changes it ---------- */
+.d-setrows { display: flex; flex-direction: column; }
+.d-setrow { display: flex; align-items: center; justify-content: space-between; gap: var(--space-16); min-height: var(--control-h-lg); padding: 10px 0; border-top: var(--border-w) solid var(--border-default); }
+.d-setrow:first-child { border-top: 0; padding-top: 0; }
+.d-setrow:last-child { padding-bottom: 0; }
+.d-setrow__text { display: grid; gap: var(--space-2); min-width: 0; line-height: 1.4; }
+.d-setrow__text b { color: var(--text-strong); font-weight: var(--weight-regular); }
+.d-setrow__text small { color: var(--text-secondary); font-size: var(--font-size-sm); }
+.d-setrow > :last-child:not(.d-setrow__text) { flex: none; }
+.d-setgrid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(340px, 100%), 1fr)); gap: var(--space-16); align-items: start; }
+
+/* ---------- feed: notifications and activity, newest first ---------- */
+.d-feed { display: flex; flex-direction: column; margin: 0; padding: 0; list-style: none; }
+.d-feed__item {
+  display: grid; grid-template-columns: 6px minmax(0, 1fr) auto; gap: var(--space-4) var(--space-12); align-items: baseline; width: 100%; padding: var(--space-12) var(--space-16);
+  border: 0; border-top: var(--border-w) solid var(--border-default); background: none; color: var(--text-primary); font: inherit; line-height: 1.4; text-align: left; text-decoration: none;
+}
+.d-feed > li:first-child > .d-feed__item, .d-feed > .d-feed__item:first-child { border-top: 0; }
+:is(a, button).d-feed__item { cursor: pointer; }
+:is(a, button).d-feed__item:hover, :is(a, button).d-feed__item:focus-visible { background: var(--bg-hover); }
+:is(a, button).d-feed__item:active { background: var(--bg-inset); }
+:is(a, button).d-feed__item:focus-visible { outline-offset: -2px; }
+.d-feed__mark { align-self: center; width: 6px; height: 6px; border-radius: var(--radius-pill); }
+.d-feed__body { display: grid; gap: var(--space-2); min-width: 0; }
+.d-feed__title { overflow-wrap: anywhere; }
+.d-feed__text { color: var(--text-secondary); font-size: var(--font-size-sm); overflow-wrap: anywhere; }
+.d-feed__time { color: var(--text-secondary); font-size: var(--font-size-xs); white-space: nowrap; }
+/* unread: a filled mark and a heavier title, never the dot alone */
+.d-feed__item[data-unread] .d-feed__mark { background: var(--accent-primary); }
+.d-feed__item[data-unread] .d-feed__title { color: var(--text-strong); font-weight: var(--weight-medium); }
+.d-feed__item[data-unread][data-severity="danger"] .d-feed__mark { background: var(--accent-danger); }
+.d-feed__item[data-unread][data-severity="warning"] .d-feed__mark { background: var(--accent-warning); }
+.d-feed__item[data-unread][data-severity="success"] .d-feed__mark { background: var(--accent-success); }
+.d-feed__item[data-unread][data-severity="info"] .d-feed__mark { background: var(--accent-info); }
+
+/* ---------- app switcher: the other apps under one account ---------- */
+.d-apps { width: min(312px, calc(100vw - 16px)); }
+.d-apps__grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-4); padding: var(--space-4); }
+.d-apps__tile {
+  display: flex; flex-direction: column; align-items: center; gap: var(--space-8); min-width: 0; padding: var(--space-12) var(--space-4) var(--space-8); border: var(--border-w) solid transparent; border-radius: var(--radius-sm);
+  background: none; color: var(--text-primary); font: inherit; font-size: var(--font-size-sm); text-align: center; text-decoration: none; cursor: pointer;
+}
+.d-apps__tile:hover { background: var(--bg-hover); color: var(--text-strong); }
+.d-apps__tile:active { background: var(--bg-inset); }
+.d-apps__tile:focus-visible { outline-offset: -2px; }
+.d-apps__mark { display: grid; place-items: center; width: 32px; height: 32px; border: var(--border-w) solid var(--border-raised); border-radius: var(--radius-sm); background: var(--bg-base); color: var(--text-strong); }
+.d-apps__mark svg { width: 20px; height: 20px; }
+.d-apps__name { max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.d-apps__tile[aria-current] { border-color: var(--border-raised); color: var(--text-max); }
+.d-apps__tile[aria-current] .d-apps__mark { border-color: var(--accent-primary); }
+.d-apps__tile[aria-disabled="true"] { color: var(--text-disabled); cursor: not-allowed; background: none; }
+.d-apps__tile[aria-disabled="true"] .d-apps__mark { color: var(--text-disabled); border-style: dashed; }
+
+@media (pointer: coarse) {
+  .d-seg__opt, .d-secnav__item, .d-feed__item, .d-apps__tile, .d-stepper__step { min-height: var(--touch-min); }
+}
