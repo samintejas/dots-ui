@@ -1568,3 +1568,14 @@ details:not([open]):has(.d-sidebar__subbtn[aria-current]) > summary.d-sidebar__b
 .d-copyval:hover { border-color: var(--border-strong); color: var(--text-strong); }
 .d-copyval[data-copied] { border-color: var(--accent-success-border); }
 .d-copyval[data-copied] .d-icon { color: var(--accent-success); }
+
+/* ---------- v4: opaque floating layers, a softer ramp ----------
+   menus, toasts, tooltips, dialogs and the palette are solid. what makes them read as glass is the finish:
+   a faint sheen falling from the top edge and the hairline of light along it. nothing behind them shows. */
+.d-elev-2, .d-menu, .d-toast, .d-tooltip, .d-elev-3, .d-dialog, .d-sheet, .d-palette {
+  background-image: linear-gradient(180deg, color-mix(in srgb, var(--text-max) 4%, transparent), transparent 56px);
+  -webkit-backdrop-filter: none; backdrop-filter: none;
+}
+/* the switch thumb is centred on the track's middle line, so it sits evenly at any zoom */
+.d-switch::before { top: 50%; transform: translate(0, -50%); }
+.d-switch:checked::before { transform: translate(14px, -50%); }
