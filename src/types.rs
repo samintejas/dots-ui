@@ -31,7 +31,7 @@ impl Severity {
     }
 }
 
-/// Control height. `Md` is the 28px default, `Sm` 20px, `Lg` 36px.
+/// Control height: `Sm` is `control-h-sm` (28px), `Md` the default `control-h` (32px), `Lg` `control-h-lg` (40px).
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
 pub enum Size {
     Sm,

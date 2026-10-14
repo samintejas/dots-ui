@@ -1,14 +1,15 @@
 # dots-ui
 
-Leptos components for the **dots** design system: monochrome, monospace, dense. Grey carries structure, colour
-appears only to signal state, dark is canonical.
+Leptos components for the **dots** design system, v9.1: dense and monochrome. Grey carries structure, colour
+appears only to signal state, and dark is the reference; light is built from the same names, and a page with no
+theme set follows the OS. Geist Mono is the interface, Geist is for reading.
 
 Every component is a thin, accessible `view!` over the markup the design system documents. State lives in the
 same native and ARIA attributes the stylesheet reads (`aria-selected`, `data-state`, …) and is driven by
 signals. It does not need `dots.js`.
 
 - Leptos **0.8** (stable). Features `csr`, `hydrate`, `ssr` are forwarded to `leptos`; enable the one your app uses.
-- 60+ components and parts, the full stylesheet, tokens, Geist Mono and 56 Lucide icons are in the crate.
+- 70+ components and parts, the full stylesheet, tokens, Geist Mono, Geist and 76 Lucide icons are in the crate.
 - Browser baseline: evergreen since early 2024 (`<dialog>`, `:has()`, container queries, `color-mix()`).
 
 ## use it
@@ -16,7 +17,7 @@ signals. It does not need `dots.js`.
 ```toml
 # Cargo.toml
 [dependencies]
-dots-ui = { version = "0.2", features = ["csr"] }
+dots-ui = { version = "0.3", features = ["csr"] }
 # or straight from git: dots-ui = { git = "https://github.com/samintejas/dots-ui", features = ["csr"] }
 ```
 
@@ -66,11 +67,12 @@ The gallery in `gallery/` uses every component: `gallery/build.sh` then
 | area | components |
 |---|---|
 | actions | `Button`, `ButtonLink`, `Menu`, `ContextMenu`, `MenuItem`, `MenuLink`, `MenuCheckbox`, `MenuRadioGroup`, `MenuRadio`, `MenuSeparator`, `MenuLabel`, `MenuHead`, `MenuFoot` |
-| forms | `FilterBar` (`FilterSearch`, `Filter`, `FilterActive`), `InputBar` (`InputSeg`, `InputBarSubmit`), `TagInput`, `TextField`, `Select`, `Checkbox`, `RadioGroup` + `Radio`, `Switch`, `Slider`, `Segmented` + `SegOption`, `SettingRows` + `SettingRow`, `Field`, `Label`, `Hint`, `ErrorText` |
+| forms | `FormStack`, `FilterBar` (`FilterSearch`, `Filter`, `FilterActive`), `InputBar` (`InputSeg`, `InputBarSubmit`), `TagInput`, `TextField`, `Select`, `Checkbox`, `RadioGroup` + `Radio`, `Switch`, `Slider`, `Segmented` + `SegOption`, `SettingRows` + `SettingRow`, `Field`, `Label`, `Hint`, `ErrorText`, `Reason` (why a control is off) |
 | status | `StatusChip`, `StatusButton`, `Badge`, `Tag`, `Progress`, `ProgressRow`, `Meter`, `MeterRow`, `Ring`, `Spinner`, `Toast` + `ToastProvider` + `use_toasts()` |
-| content | `Card` (`CardHead`, `CardBody`, `CardFoot`, `CardButton`, `CardLink`), `List`, `ListItem`, `Listbox`, `ListOption`, `Table` (`Th`, `Tr`, `Td`, `EditCell`), `Accordion`, `CodeBlock`, `HeroMetric`, `HeroClock`, `EmptyState`, `EmptyLoading`, `EmptyError`, `Avatar` (`AvatarImage`, `AvatarGroup`, `Identity`), `Kbd`/`Keys`, `Divider`, `Surface` (elevation), `Feed` + `FeedItem`, `CopyValue`, `StatusPage`, `Pebbles` |
+| content | `Card` (`CardHead`, `CardBody`, `CardFoot`, `CardButton`, `CardLink`), `List`, `ListItem`, `Listbox`, `ListOption`, `Table` (`Th`, `Tr`, `Td`, `EditCell`), `Accordion`, `CodeBlock`, `HeroMetric`, `HeroClock`, `EmptyState`, `EmptyLoading`, `EmptyError`, `Avatar` (`AvatarImage`, `AvatarGroup`, `Identity`), `Kbd`/`Keys`, `Divider`, `Surface` (elevation), `Feed` + `FeedItem`, `CopyValue`, `StatusPage`, `Pebbles`, `Prose`, `Link` |
+| charts | `Chart` (your `<svg>` with `d-chart__*` marks), `Legend` + `LegendItem`, `ChartTable` |
 | navigation | `Tabs` (`TabList`, `Tab`, `TabPanel`), `Breadcrumbs`, `Pager`, `SectionNav` (+ layout, item, label), `Stepper`, `AppSwitcher`, `Chat` (steps, copy/retry), `WorkspaceDots`, `WorkspaceSteps`, `CommandPalette` |
-| layout | `Shell`, `ShellMain`, `Main`, `SkipLink`, `ShellToggle`, `AppBar` (+ parts), `Sidebar` (+ switcher, filter, groups, items, parents, actions, account), `RightBar`, `BottomBar`, `SplitPane` + `Pane` |
+| layout | `Page`, `Section`, `Stack`, `Grid`, `Actions`, `Container`, `Shell`, `ShellMain`, `Main`, `SkipLink`, `ShellToggle`, `AppBar` (+ parts), `Sidebar` (+ switcher, filter, groups, items, parents, actions, account), `RightBar`, `BottomBar`, `SplitPane` + `Pane` |
 | overlays | `Dialog`, `Sheet`, `DialogClose`, `use_dialog()`, tooltips via `data-tooltip` |
 | setup | `DotsProvider`, `ThemeProvider`, `use_theme()`, `DotsStyles`, `Icon`, `icon_names()` |
 
@@ -87,7 +89,10 @@ The gallery in `gallery/` uses every component: `gallery/build.sh` then
 - **Shell**: needs a fixed height (`100dvh` by default). Ctrl+B / Ctrl+Alt+B / Ctrl+J toggle the bars, the tiles
   stack under 768px, and `persist="key"` remembers the state. Drive it from outside with `ShellState`.
 - **Dialog**: `dismiss=false` ignores the scrim and focuses the first footer button (cancel).
-- **Theme**: `use_theme()` is an `RwSignal<Theme>` mirrored to `data-theme` on `<html>`.
+- **Theme**: `use_theme()` is an `RwSignal<Theme>` mirrored to `data-theme` on `<html>`. `Theme::System` (the
+  default) leaves the attribute off so the tokens follow `prefers-color-scheme`; offer system, dark and light.
+- **Disabled**: a control is never off without saying why. Put a `Reason` next to it and point the control's
+  `aria-describedby` at it (`attr:aria-describedby="why"`).
 
 ## refreshing from the design system
 
@@ -101,12 +106,7 @@ scripts/gen_icons.py path/to/components/bundle.js
 Class names and attributes are the contract: when a component's README changes, change the matching file in
 `src/components/`.
 
-## licences
-
-Geist Mono is SIL OFL 1.1 (`assets/fonts/LICENSE.txt`); Lucide icons are ISC/MIT (`assets/LICENSE-lucide.txt`).
-Add a licence for this crate before publishing it.
-
 ## licence
 
-MIT (see `LICENSE`). Geist Mono is bundled under the SIL Open Font License 1.1 (`assets/fonts/LICENSE.txt`) and the
+MIT (see `LICENSE`). Geist Mono and Geist are bundled under the SIL Open Font License 1.1 (`assets/fonts/LICENSE.txt`) and the
 icons come from Lucide, ISC (`assets/LICENSE-lucide.txt`).

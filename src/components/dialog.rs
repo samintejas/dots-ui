@@ -114,7 +114,7 @@ pub fn DialogClose(
     view! { <Button variant=variant on:click=move |_| h.close(value.clone())>{children()}</Button> }
 }
 
-/// A modal for a decision that blocks everything else. 480px wide, centred on the scrim.
+/// A modal for a decision that blocks everything else. Up to `palette-w` (600px) wide, centred on the scrim.
 ///
 /// The title is the question; the confirming button repeats the verb and the object (`delete workspace`,
 /// never `ok`). Put cancel first in `footer`, so it is focused first. Do not open a dialog from a dialog.

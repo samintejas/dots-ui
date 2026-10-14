@@ -3,7 +3,7 @@ use wasm_bindgen::JsCast;
 
 use crate::types::Size;
 
-/// A dense data table: 28px rows, 1px separators, sticky header, tabular numerals, no zebra striping.
+/// A dense data table: `row-h` rows, `border-subtle` separators, sticky header, tabular numerals, no zebra striping.
 ///
 /// You own the data and the sort; render `<thead>`/`<tbody>` as usual with [`Th`], [`Tr`] and [`Td`].
 #[component]

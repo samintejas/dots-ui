@@ -42,6 +42,8 @@ pub mod feed;
 pub mod app_switcher;
 pub mod status_page;
 pub mod copy_value;
+pub mod layout;
+pub mod chart;
 
 pub use accordion::*;
 pub use chat::{Chat, ChatMessage, ChatStep, From as ChatFrom, StepState};
@@ -85,4 +87,6 @@ pub use feed::*;
 pub use app_switcher::*;
 pub use status_page::*;
 pub use copy_value::*;
+pub use layout::*;
+pub use chart::*;
 

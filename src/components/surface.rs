@@ -1,10 +1,12 @@
 use leptos::prelude::*;
 
-/// Elevation levels. A level is a surface step and a stronger border; only floating layers cast a shadow.
+/// Elevation levels. Forward is lighter: each step up is a lighter layer, and from raised up it casts a shadow.
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
 pub enum Elevation {
-    /// Sunk into the page: input wells, tracks.
+    /// Sunk into the page: tracks and insets.
     Inset,
+    /// The ground: the page and every layout tile (`bg-base`).
+    Base,
     /// Rests on the page: cards, panels.
     #[default]
     Surface,
@@ -19,6 +21,7 @@ pub enum Elevation {
 pub fn Surface(#[prop(optional)] level: Elevation, children: Children) -> impl IntoView {
     let class = match level {
         Elevation::Inset => "d-elev-inset",
+        Elevation::Base => "d-elev-0",
         Elevation::Surface => "d-elev-1",
         Elevation::Raised => "d-elev-2",
         Elevation::Overlay => "d-elev-3",

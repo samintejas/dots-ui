@@ -1,4 +1,4 @@
-//! Leptos components for the **dots** design system: monochrome, monospace, dense.
+//! Leptos components for the **dots** design system (v9): dense and monochrome, grey for structure, accent for state.
 //!
 //! Every component is a thin, accessible `view!` over the documented dots markup. State lives in the same
 //! native and ARIA attributes the stylesheet reads (`aria-selected`, `data-state`, …) and is driven by
@@ -48,11 +48,11 @@ use leptos::prelude::*;
 
 /// App-level setup in one wrapper: theme, toasts and tooltips.
 ///
-/// Put it once near the root of the app. It sets `data-theme` on `<html>`, renders the toast region and
+/// Put it once near the root of the app. It sets `data-theme` on `<html>` (or leaves it off to follow the OS), renders the toast region and
 /// installs the delegated tooltip layer (any element with a `data-tooltip` attribute gets a tooltip).
 #[component]
 pub fn DotsProvider(
-    /// Theme to start in. Defaults to dark, the canonical theme.
+    /// Theme to start in. Defaults to [`Theme::System`]: follow the OS.
     #[prop(optional)]
     theme: Option<Theme>,
     /// `localStorage` key to remember the theme under. Off unless set.

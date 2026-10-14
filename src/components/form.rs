@@ -39,7 +39,7 @@ fn describedby(hint: Option<&str>, error: Option<&str>) -> Option<String> {
     (!ids.is_empty()).then(|| ids.join(" "))
 }
 
-/// Single-line input (or textarea) in an inset well, with its label, hint and error.
+/// Single-line input (or textarea), a faint `bg-field` tint with a 3:1 `border-strong` edge, with its label, hint and error.
 ///
 /// `error: Some(..)` marks the field invalid and shows the message, prefixed with `error:` when it is not.
 #[component]
@@ -259,7 +259,7 @@ impl<V: Into<String> + Clone> From<V> for SelectOption {
     }
 }
 
-/// Native select in the same well as the text field. Up to about twelve options; more is a menu or the palette.
+/// Native select with the same field and edge as the text field. Up to about twelve options; more is a menu or the palette.
 #[component]
 pub fn Select(
     #[prop(into)] label: String,

@@ -49,7 +49,7 @@ impl Region {
 /// What a collapsed sidebar leaves behind.
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
 pub enum Collapsible {
-    /// A 44px icon rail.
+    /// A `sidebar-w-icon` (48px) icon rail.
     #[default]
     Icon,
     /// Nothing: zero wide, hidden and inert.

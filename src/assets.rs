@@ -4,18 +4,23 @@
 
 use leptos::prelude::*;
 
-/// `tokens.css`: primitives and semantic aliases. Dark in `:root`, light under `[data-theme="light"]`.
+/// `tokens.css` (v9): primitives and semantic aliases. Dark in `:root`, light under `[data-theme="light"]`, and
+/// a page with no `data-theme` follows `prefers-color-scheme`.
 /// Its `@font-face` rules point at `./fonts/`.
 pub const TOKENS_CSS: &str = include_str!("../assets/tokens.css");
 
 /// `dots.css`: the component styles (class prefix `d-`). Needs [`TOKENS_CSS`].
 pub const DOTS_CSS: &str = include_str!("../assets/dots.css");
 
-/// Geist Mono, SIL OFL. Name and bytes for each weight, to serve under one directory (default `/fonts/`).
+/// Geist Mono (the interface) and Geist (prose), SIL OFL. Name and bytes for each weight, to serve under one
+/// directory (default `/fonts/`).
 pub const FONTS: &[(&str, &[u8])] = &[
     ("GeistMono-Regular.woff2", include_bytes!("../assets/fonts/GeistMono-Regular.woff2")),
     ("GeistMono-Medium.woff2", include_bytes!("../assets/fonts/GeistMono-Medium.woff2")),
     ("GeistMono-SemiBold.woff2", include_bytes!("../assets/fonts/GeistMono-SemiBold.woff2")),
+    ("Geist-Regular.woff2", include_bytes!("../assets/fonts/Geist-Regular.woff2")),
+    ("Geist-Medium.woff2", include_bytes!("../assets/fonts/Geist-Medium.woff2")),
+    ("Geist-SemiBold.woff2", include_bytes!("../assets/fonts/Geist-SemiBold.woff2")),
 ];
 
 /// `tokens.css` with its font urls pointed at `font_base` (for example `"/fonts/"`).
@@ -48,7 +53,7 @@ pub fn write_to(dir: impl AsRef<std::path::Path>) -> std::io::Result<()> {
 /// Prefer linking real files in production for caching; this is the zero-setup option.
 #[component]
 pub fn DotsStyles(
-    /// Where the Geist Mono files are served from. Default `/fonts/`.
+    /// Where the Geist and Geist Mono files are served from. Default `/fonts/`.
     #[prop(optional, into)]
     font_base: Option<String>,
 ) -> impl IntoView {

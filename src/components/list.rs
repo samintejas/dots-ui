@@ -5,7 +5,7 @@ use wasm_bindgen::JsCast;
 use crate::types::Size;
 use crate::util::dom;
 
-/// Dense 28px rows with 1px separators. For a bordered list, put it in a flush [`CardBody`](crate::CardBody).
+/// Rows of `row-h` (36px; `row-h-lg` 44px with `lg`) split by `border-subtle` lines. For a bordered list, put it in a flush [`CardBody`](crate::CardBody).
 #[component]
 pub fn List(#[prop(optional)] size: Size, children: Children) -> impl IntoView {
     view! { <ul class=if size == Size::Lg { "d-list d-list--lg" } else { "d-list" }>{children()}</ul> }

@@ -35,7 +35,7 @@ fn Gallery() -> impl IntoView {
     let dialog_open = RwSignal::new(false);
     let sheet_open = RwSignal::new(false);
     let last_run = RwSignal::new(String::from("nothing yet"));
-    let theme_name = RwSignal::new("dark".to_string());
+    let theme_name = RwSignal::new("system".to_string());
     Effect::new(move |_| {
         let t = Theme::parse(&theme_name.get()).unwrap_or_default();
         if theme.get_untracked() != t {
@@ -93,6 +93,7 @@ fn Gallery() -> impl IntoView {
                 <SidebarFoot>
                     <SidebarAccount label="account" initials="st" name="samin t" meta="samin@acme.example">
                         <MenuRadioGroup label="theme" value=theme_name>
+                            <MenuRadio value="system">"system"</MenuRadio>
                             <MenuRadio value="dark">"dark"</MenuRadio>
                             <MenuRadio value="light">"light"</MenuRadio>
                         </MenuRadioGroup>
@@ -183,7 +184,7 @@ fn ComponentTour(
     let checked = RwSignal::new(true);
     let autosave = RwSignal::new(true);
     let proto = RwSignal::new("tcp".to_string());
-    let theme = RwSignal::new("dark".to_string());
+    let theme = RwSignal::new("system".to_string());
     let vol = RwSignal::new(40.0);
     let tab = RwSignal::new("overview".to_string());
     let branch = RwSignal::new("main".to_string());
@@ -231,19 +232,20 @@ fn ComponentTour(
 
     view! {
         <Section title="button">
-            <div class="d-row" style="gap:var(--space-8)">
+            <Actions>
                 <Button variant=ButtonVariant::Primary>"deploy"</Button>
                 <Button>"cancel"</Button>
                 <Button variant=ButtonVariant::Ghost>"details"</Button>
-                <Button variant=ButtonVariant::Danger>"delete workspace"</Button>
+                <Button variant=ButtonVariant::Danger><Icon name="trash-2"/>"delete workspace"</Button>
                 <Button variant=ButtonVariant::Primary busy=busy on:click=move |_| busy.update(|b| *b = !*b)>"deploying"</Button>
                 <Button icon=true label="settings" tooltip="settings"><Icon name="settings"/></Button>
                 <Button pressed=pressed on:click=move |_| pressed.update(|p| *p = !*p)>"watch"</Button>
-                <Button disabled=true>"disabled"</Button>
-            </div>
+                <Button variant=ButtonVariant::Danger aria_disabled=true attr:aria-describedby="why-remove"><Icon name="trash-2"/>"remove member"</Button>
+            </Actions>
+            <Reason id="why-remove">"only an owner can remove members"</Reason>
         </Section>
         <Section title="badge, status, kbd, avatar">
-            <div class="d-row" style="gap:var(--space-8)">
+            <Actions>
                 <Badge>"v1.0.0"</Badge>
                 <Badge tone=Severity::Danger icon=true>"error"</Badge>
                 <Badge tone=Severity::Success>"saved"</Badge>
@@ -254,7 +256,7 @@ fn ComponentTour(
                 <Keys keys=vec!["ctrl".to_string(), "k".to_string()]/>
                 <Avatar initials="st" name="samin t"/>
                 <Avatar initials="ab" name="ab" size=Size::Lg/>
-            </div>
+            </Actions>
         </Section>
         <Section title="form">
             <TextField label="hostname" optional=true value=name hint="lowercase, no spaces" error=host_error/>
@@ -264,7 +266,7 @@ fn ComponentTour(
                 <Radio value="tcp">"tcp"</Radio>
                 <Radio value="udp">"udp"</Radio>
             </RadioGroup>
-            <Select label="theme" value=theme options=vec![SelectOption::new("dark", "dark"), SelectOption::new("light", "light")]/>
+            <Select label="theme" value=theme options=vec![SelectOption::new("system", "system"), SelectOption::new("dark", "dark"), SelectOption::new("light", "light")]/>
             <Slider value=vol label="volume"/>
             <ProgressRow label="uploading" value=progress/>
             <Progress label="indexing"/>
@@ -395,6 +397,49 @@ fn ComponentTour(
                 <StatusPage kind=StatusKind::NotFound title="you are lost" foot="pebblelab/fin"><a class="d-link" href="#">"click here to go home"</a></StatusPage>
             </div>
         </Section>
+        <Section title="layout, prose, chart">
+            <Page>
+                <dots_ui::Section title="spending" meta="last 30 days">
+                    <Prose>
+                        <p>"every paragraph sets in geist; the interface stays in geist mono. a "<code>"<p>"</code>" that is really a label takes "<code>"d-mono"</code>"."</p>
+                        <p>"see the "<Link href="#">"style guide"</Link>" for the rules."</p>
+                    </Prose>
+                    <Chart label="spending by week, groceries and fuel">
+                        <svg viewBox="0 0 320 120" style="max-width:480px" role="img" aria-label="bars for four weeks">
+                            <line class="d-chart__grid" x1="24" x2="320" y1="20" y2="20"/>
+                            <line class="d-chart__grid" x1="24" x2="320" y1="60" y2="60"/>
+                            <line class="d-chart__axis" x1="24" x2="320" y1="100" y2="100"/>
+                            <text class="d-chart__tick" x="0" y="24">"4k"</text>
+                            <text class="d-chart__tick" x="0" y="64">"2k"</text>
+                            <rect class="d-chart__bar" data-cat="1" x="40" y="40" width="24" height="60"/>
+                            <rect class="d-chart__bar" data-cat="1" x="110" y="30" width="24" height="70"/>
+                            <rect class="d-chart__bar" data-cat="1" x="180" y="56" width="24" height="44"/>
+                            <rect class="d-chart__bar" data-cat="1" x="250" y="48" width="24" height="52"/>
+                            <polyline class="d-chart__line" data-cat="2" points="52,80 122,70 192,84 262,64"/>
+                        </svg>
+                        <Legend label="series">
+                            <LegendItem cat=1>"groceries"</LegendItem>
+                            <LegendItem cat=2 line=true>"fuel"</LegendItem>
+                        </Legend>
+                        <ChartTable>
+                            <Table label="spending by week">
+                                <thead><tr><Th>"week"</Th><Th num=true>"groceries"</Th><Th num=true>"fuel"</Th></tr></thead>
+                                <tbody>
+                                    <Tr><Td>"1"</Td><Td num=true>"₹3,000"</Td><Td num=true>"₹1,000"</Td></Tr>
+                                    <Tr><Td>"2"</Td><Td num=true>"₹3,500"</Td><Td num=true>"₹1,500"</Td></Tr>
+                                </tbody>
+                            </Table>
+                        </ChartTable>
+                    </Chart>
+                </dots_ui::Section>
+                <dots_ui::Section title="cards">
+                    <Grid>
+                        <Surface>"surface"</Surface>
+                        <Surface level=Elevation::Raised>"raised"</Surface>
+                    </Grid>
+                </dots_ui::Section>
+            </Page>
+        </Section>
         <Section title="chat">
             <div style="height:360px">
                 <Chat name="tracer" label="ask tracer" title="ask tracer" intro="answers come from your own transactions and accounts."
@@ -403,7 +448,7 @@ fn ComponentTour(
             </div>
         </Section>
         <Section title="overlays">
-            <div class="d-row" style="gap:var(--space-8)">
+            <Actions>
                 <Button on:click=move |_| palette_open.set(true)>"open palette"</Button>
                 <Button variant=ButtonVariant::Danger on:click=move |_| dialog_open.set(true)>"delete workspace"</Button>
                 <Button on:click=move |_| sheet_open.set(true)>"settings"</Button>
@@ -420,7 +465,7 @@ fn ComponentTour(
                 <ContextMenu label="pane actions" target=|| view! { <span class="d-badge">"right click me"</span> }>
                     <MenuItem>"copy"</MenuItem>
                 </ContextMenu>
-            </div>
+            </Actions>
             <HeroClock blink=true label="local time"/>
             <CodeBlock title="button.rs" numbered=true code="use leptos::prelude::*;\n// one token span never crosses a line break"/>
         </Section>
