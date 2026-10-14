@@ -405,7 +405,7 @@ fn ComponentTour(
                         <p>"see the "<Link href="#">"style guide"</Link>" for the rules."</p>
                     </Prose>
                     <Chart label="spending by week, groceries and fuel">
-                        <svg viewBox="0 0 320 120" role="img" aria-label="bars for four weeks">
+                        <svg viewBox="0 0 320 120" style="max-width:480px" role="img" aria-label="bars for four weeks">
                             <line class="d-chart__grid" x1="24" x2="320" y1="20" y2="20"/>
                             <line class="d-chart__grid" x1="24" x2="320" y1="60" y2="60"/>
                             <line class="d-chart__axis" x1="24" x2="320" y1="100" y2="100"/>
