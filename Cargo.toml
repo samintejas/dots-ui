@@ -1,9 +1,9 @@
 [package]
 name = "dots-ui"
-version = "0.2.0"
+version = "0.3.0"
 edition = "2024"
 rust-version = "1.88"
-description = "Leptos components for the dots design system: monochrome, monospace, dense."
+description = "Leptos components for the dots design system: dense and monochrome, grey for structure, accent for state."
 readme = "README.md"
 license = "MIT"
 repository = "https://github.com/samintejas/dots-ui"

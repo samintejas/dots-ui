@@ -16,7 +16,7 @@ struct SegCtx {
 pub fn Segmented(
     value: RwSignal<String>,
     #[prop(into)] label: String,
-    /// 36px instead of 28px.
+    /// `control-h-lg` (40px) instead of `control-h` (32px).
     #[prop(optional)]
     large: bool,
     /// Full width: the options share it.

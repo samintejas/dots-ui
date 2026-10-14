@@ -1,4 +1,4 @@
-//! Dropdown and context menus: a raised list with 28px rows, one level, no submenus.
+//! Dropdown and context menus: a raised layer (`bg-raised` + `shadow-raised`), one level, no submenus.
 //!
 //! The panel is moved to the end of `<body>` (or the open dialog) while it is shown, so nothing clips it.
 

@@ -12,7 +12,7 @@ struct AppBarCtx {
     panel_id: String,
 }
 
-/// The 32px top bar. Left: where you are. Right: search, status, notifications and the account menu.
+/// The top bar, `bar-h` tall. Left: where you are. Right: search, status, notifications and the account menu.
 ///
 /// One bar per page. Below 768px what does not fit (put it in [`AppBarCollapse`]) moves to a second line
 /// inside the bar, opened by [`AppBarMenu`]. Page-level actions belong in the page, not here.
@@ -71,7 +71,7 @@ pub fn AppBarLink(
     }
 }
 
-/// A button styled as a well that opens the command palette. An icon below 768px.
+/// A button styled as a field that opens the command palette. An icon below 768px.
 #[component]
 pub fn AppBarSearch(
     /// Defaults to `search`.
