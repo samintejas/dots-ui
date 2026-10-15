@@ -343,8 +343,9 @@ button.d-status:disabled::before { color: var(--text-disabled); }
 .d-btn--ghost:disabled, .d-btn--ghost[aria-disabled="true"] { border-color: transparent; }
 
 /* ---------- form fields ---------- */
-.d-field { display: grid; gap: 6px; min-width: 0; }
-.d-form { display: grid; gap: var(--gap-outer); min-width: 0; }
+/* one column that may shrink: a wide child (a big amount input) wraps or clips inside the field instead of pushing it past its neighbours */
+.d-field { display: grid; grid-template-columns: minmax(0, 1fr); gap: 6px; min-width: 0; }
+.d-form { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--gap-outer); min-width: 0; }
 .d-label { color: var(--text-strong); font-size: var(--font-size-sm); font-weight: var(--weight-medium); }
 .d-label span { color: var(--text-secondary); font-weight: var(--weight-regular); }
 .d-hint { color: var(--text-secondary); font-size: var(--font-size-sm); }
