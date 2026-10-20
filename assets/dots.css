@@ -966,10 +966,12 @@ details:not([open]):has(.d-sidebar__subbtn[aria-current]) > summary.d-sidebar__b
 /* ---------- coarse pointers: 44px targets, same visual size ---------- */
 @media (pointer: coarse) {
   .d-btn, .d-tab, .d-step, .d-badge__x, .d-code__copy, button.d-status, button.d-avatar, .d-appbar__search { position: relative; }
-  .d-btn::after, .d-tab::after, .d-step::after, .d-badge__x::after, .d-code__copy::after, button.d-status::after, button.d-avatar::after, .d-appbar__search::after {
+  /* a filter draws its chevron on ::after, so it grows to the touch size itself instead */
+  .d-btn:not(.d-filter)::after, .d-tab::after, .d-step::after, .d-badge__x::after, .d-code__copy::after, button.d-status::after, button.d-avatar::after, .d-appbar__search::after {
     content: ""; position: absolute; top: 50%; left: 50%; width: max(100%, var(--touch-min)); height: max(100%, var(--touch-min)); transform: translate(-50%, -50%);
   }
   button.d-dot { min-width: var(--touch-min); min-height: var(--touch-min); }
+  .d-filter { min-height: var(--touch-min); }
   .d-sidebar__action.d-btn { position: absolute; opacity: 1; }
   .d-sidebar__btn, .d-sidebar__subbtn, .d-sidebar__tile { min-height: var(--touch-min); }
   .d-choice, .d-menu__item, .d-palette__opt, .d-accordion summary, a.d-list__row, button.d-list__row, [role="option"].d-list__row, .d-appbar__link { min-height: var(--touch-min); }
